@@ -1,27 +1,14 @@
 #!/usr/bin/env python3
-"""
-Provenance Guard — the web service.
+"""Provenance Guard: local estimates, durable audit events, and appeals.
 
-    python app.py
+POST /ping        unchanged starter control route
+POST /submit      validate, score with two mechanisms, and persist a decision
+POST /appeal      append a review request without changing the original decision
+GET /content/<id> retrieve original decision, appeals, and current review status
+GET /log          retrieve audit events
+GET /health       report model and storage readiness
 
-Then, in another terminal:
-
-    curl -X POST http://127.0.0.1:5000/ping \
-      -H "Content-Type: application/json" \
-      -d '{"message": "hello"}'
-
-That's the example route. It works right now, before you've written anything.
-**Leave it alone** — it's your control. When something breaks later, check that
-`/ping` still answers: if it does, the problem is in your handler; if it
-doesn't, it's the service itself.
-
-Routes:
-
-    POST /ping        the worked example. Already works. Don't edit it
-    POST /submit      ← YOU BUILD THIS (Milestone 3, 4, 5)
-    POST /appeal      ← YOU BUILD THIS (Milestone 5)
-    GET  /log         the audit log. Already works
-    GET  /health      is the service up, and is the model loaded
+Run with `python app.py`; see RUNNING.md for setup and verification.
 """
 
 import uuid

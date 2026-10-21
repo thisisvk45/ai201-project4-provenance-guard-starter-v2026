@@ -1,0 +1,66 @@
+Provenance Guard on http://127.0.0.1:62068
+  detector model:  gpt2
+  rate limiting:   off (unit 8)
+  audit log:       /private/tmp/provenance-guard-work/logs/audit.jsonl
+
+Check it's alive:
+  curl -X POST http://127.0.0.1:62068/ping \
+    -H "Content-Type: application/json" \
+    -d '{"message": "hello"}'
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:62068
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [21/Oct/2026 18:34:14] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:14] "POST /ping HTTP/1.1" 200 -
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /log HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /log HTTP/1.1" 200 -
+Provenance Guard on http://127.0.0.1:62068
+  detector model:  gpt2
+  rate limiting:   off (unit 8)
+  audit log:       /private/tmp/provenance-guard-work/logs/audit.jsonl
+
+Check it's alive:
+  curl -X POST http://127.0.0.1:62068/ping \
+    -H "Content-Type: application/json" \
+    -d '{"message": "hello"}'
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:62068
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/96aafa60-2125-4d06-bf64-16d1468c18e0 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/d68e5363-3ddc-4da1-b587-92608574ab2c HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/0270c266-a568-470d-a2f5-a50d88a30257 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/4665f210-96f9-4a80-b1b9-7c24db8981dc HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/d39522d3-843e-4e0a-b776-6b88ecbc172f HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/4fed933d-5dd0-4ba4-9cc5-642a5a89fe1e HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/c66173f8-503c-4332-88da-3361873626af HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/84b5af94-eb03-49c7-88b7-f36f611f59ef HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/8dedbf99-8868-4857-bf50-290cee8de20b HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /content/97094a6d-0036-46f0-a102-fcd69505d812 HTTP/1.1" 200 -
