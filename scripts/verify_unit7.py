@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 import platform
 import socket
@@ -83,6 +84,13 @@ def main():
             elapsed = time.perf_counter() - began
             assert response.status_code == 201, (fixture["id"], response.status_code, response.text)
             payload = response.json()
+            for field in ("model_score", "style_score", "combined_score", "confidence"):
+                assert math.isfinite(payload[field]) and 0 <= payload[field] <= 1, (fixture["id"], field)
+            assert payload["confidence"] == payload["combined_score"]
+            expected = "human" if payload["confidence"] <= .25 else "ai" if payload["confidence"] >= .80 else "unsure"
+            assert payload["guess"] == expected, fixture["id"]
+            if payload["evidence"]["limitations"]:
+                assert payload["guess"] == "unsure", fixture["id"]
             result["samples"].append({"fixture_id": fixture["id"], "category": fixture["category"],
                                       "provenance": fixture["provenance"], "request": body,
                                       "http_status": response.status_code, "seconds": round(elapsed, 4),
@@ -92,8 +100,13 @@ def main():
                   f'guess={payload["guess"]}', flush=True)
         decisions_before = session.get(base + "/log", timeout=10).json()["entries"]
         for sample in result["samples"]:
+            current = session.get(base + "/content/" + sample["response"]["content_id"], timeout=10)
+            assert current.status_code == 200
+            assert current.json()["status"] == "decided" and current.json()["appeals"] == []
             body = {"content_id": sample["response"]["content_id"],
                     "reasoning": f'Development review request for {sample["fixture_id"]}. Please inspect the recorded signal evidence; this is not an authorship admission.'}
+            if sample is result["samples"][0]:
+                body["reasoning"] += "\u2028Draft context.\u2029Review requested.\u0085End."
             response = session.post(base + "/appeal", json=body, timeout=10)
             assert response.status_code == 200 and response.json()["status"] == "under_review"
             result["appeals"].append({"request": body, "http_status": response.status_code, "response": response.json()})
@@ -127,6 +140,8 @@ def main():
             "Criteria 1 and 2 require a separate frozen held-out corpus in Unit 8 and are not evaluated here.",
         ]
         output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
+        if not result["all_three_labels_reached"]:
+            raise SystemExit(f"Label coverage failed: {result['label_coverage']}. Evidence saved to {output}.")
         print(f"Saved {output}; label coverage={result['label_coverage']}; 10/10 appeals survived restart.", flush=True)
     finally:
         stop()

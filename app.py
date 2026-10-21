@@ -249,10 +249,10 @@ def submit():
         limitations.append("fewer_than_3_sentences")
     if model["truncated"]:
         limitations.append("only_first_400_tokens_scored")
-    disagreement = abs(model["model_score"] - style["style_score"]) > config.DISAGREEMENT_THRESHOLD
     try:
         score = scoring.decision_score(model["model_score"], style["style_score"], weak_evidence=bool(limitations))
         guess, label = scoring.score_to_label(score)
+        disagreement = abs(model["model_score"] - style["style_score"]) > config.DISAGREEMENT_THRESHOLD
     except ValueError as exc:
         raise APIError("invalid_signal", "A signal or scoring configuration was invalid.", 503) from exc
     content_id = str(uuid.uuid4())

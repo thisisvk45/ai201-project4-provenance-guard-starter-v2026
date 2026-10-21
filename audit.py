@@ -124,11 +124,23 @@ def _append(entry: dict) -> dict:
         config.AUDIT_LOG.parent.mkdir(parents=True, exist_ok=True)
         # Refuse to append behind corrupt history and make it look healthy.
         read_entries()
-        with config.AUDIT_LOG.open("a", encoding="utf-8") as f:
-            f.write(line + "\n")
+        with config.AUDIT_LOG.open("a+b") as f:
+            # A valid final record need not have a trailing newline. Preserve it
+            # and insert the delimiter before appending the next JSON object.
+            f.seek(0, os.SEEK_END)
+            separator = b""
+            if f.tell():
+                f.seek(-1, os.SEEK_END)
+                if f.read(1) != b"\n":
+                    separator = b"\n"
+            f.write(separator + (line + "\n").encode("utf-8"))
             f.flush()
             os.fsync(f.fileno())
     return entry
+
+
+def _reject_nonfinite(value: str):
+    raise ValueError(f"Non-JSON numeric constant: {value}")
 
 
 def read_entries(limit: int | None = None) -> list[dict]:
@@ -145,14 +157,16 @@ def read_entries(limit: int | None = None) -> list[dict]:
             return []
         entries = []
         try:
-            lines = config.AUDIT_LOG.read_text(encoding="utf-8").splitlines()
+            # JSONL uses LF, not Unicode paragraph/line separators that may
+            # legitimately occur inside an appeal's exact reasoning string.
+            lines = config.AUDIT_LOG.read_text(encoding="utf-8").split("\n")
         except UnicodeDecodeError as exc:
             raise AuditCorrupt("Audit history is not valid UTF-8") from exc
         for number, line in enumerate(lines, 1):
             if not line.strip():
                 continue
             try:
-                entry = json.loads(line)
+                entry = json.loads(line, parse_constant=_reject_nonfinite)
                 if not isinstance(entry, dict):
                     raise ValueError("record must be an object")
                 entries.append(entry)

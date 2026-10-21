@@ -121,6 +121,9 @@ class ServiceTests(unittest.TestCase):
         short = self.submit("An ordinary short sentence.")
         self.assertEqual(short["guess"], "unsure")
         self.assertIn("fewer_than_40_words", short["evidence"]["limitations"])
+        single_sentence = self.submit("ordinary words " * 25 + ".")
+        self.assertEqual(single_sentence["guess"], "unsure")
+        self.assertEqual(single_sentence["evidence"]["limitations"], ["fewer_than_3_sentences"])
         self.model.return_value = model_result(.99, truncated=True)
         long = self.submit()
         self.assertEqual(long["guess"], "unsure")
@@ -140,6 +143,32 @@ class ServiceTests(unittest.TestCase):
         current = self.client.get("/content/" + decision["content_id"]).get_json()
         self.assertEqual(current["status"], "under_review")
         self.assertEqual(current["original_decision"], records[0])
+
+    def test_unicode_appeal_separators_remain_readable(self):
+        decision = self.submit()
+        reason = "Draft one\u2028Draft two\u2029Please review\u0085Thank you."
+        response = self.client.post("/appeal", json={"content_id": decision["content_id"], "reasoning": reason})
+        self.assertEqual(response.status_code, 200)
+        current = self.client.get("/content/" + decision["content_id"])
+        self.assertEqual(current.status_code, 200)
+        self.assertEqual(current.get_json()["appeals"][0]["reasoning"], reason)
+        self.assertEqual(len(audit.read_entries()), 2)
+
+    def test_append_preserves_valid_history_without_final_newline(self):
+        self.submit()
+        original = self.log.read_bytes().rstrip(b"\n")
+        self.log.write_bytes(original)
+        self.submit()
+        self.assertEqual(len(audit.read_entries()), 2)
+        self.assertTrue(self.log.read_bytes().startswith(original + b"\n"))
+
+    def test_lookup_before_appeal_and_missing_content(self):
+        decision = self.submit()
+        current = self.client.get("/content/" + decision["content_id"])
+        self.assertEqual(current.status_code, 200)
+        self.assertEqual(current.get_json()["status"], "decided")
+        self.assertEqual(current.get_json()["appeals"], [])
+        self.assertEqual(self.client.get("/content/" + str(uuid.uuid4())).status_code, 404)
 
     def test_unknown_and_invalid_appeals(self):
         identifier = self.submit()["content_id"]
@@ -163,11 +192,14 @@ class ServiceTests(unittest.TestCase):
         self.assertNotIn("local diagnostic", response.get_data(as_text=True))
         self.assertEqual(audit.read_entries(), [])
 
-    def test_nonfinite_model_result_does_not_create_decision(self):
-        self.model.return_value = model_result(float("nan"))
-        response = self.client.post("/submit", json={"text": TEXT, "creator_id": "x"})
-        self.assertEqual(response.status_code, 503)
-        self.assertEqual(audit.read_entries(), [])
+    def test_invalid_model_scores_do_not_create_decisions(self):
+        for score in [float("nan"), float("inf"), None, "0.5", True, -.01, 1.01]:
+            with self.subTest(score=score):
+                self.model.return_value = model_result(score)
+                response = self.client.post("/submit", json={"text": TEXT, "creator_id": "x"})
+                self.assertEqual(response.status_code, 503)
+                self.assertEqual(response.get_json()["error"], "invalid_signal")
+                self.assertEqual(audit.read_entries(), [])
 
     def test_busy_detector_is_explicit(self):
         app._inference_slot.acquire()
@@ -191,6 +223,16 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(self.client.get("/health").status_code, 503)
         self.assertEqual(self.client.post("/submit", json={"text": TEXT, "creator_id": "x"}).status_code, 503)
         self.model.assert_not_called()
+
+    def test_nonfinite_history_is_rejected_without_appending(self):
+        for token in ["NaN", "Infinity", "-Infinity"]:
+            with self.subTest(token=token):
+                original = '{"combined_score":' + token + '}\n'
+                self.log.write_text(original)
+                self.assertEqual(self.client.get("/log").status_code, 503)
+                with self.assertRaises(audit.AuditCorrupt):
+                    audit.log_rejection("test", "must not append")
+                self.assertEqual(self.log.read_text(), original)
 
     def test_log_limit_and_concurrent_append(self):
         with ThreadPoolExecutor(max_workers=8) as pool:
