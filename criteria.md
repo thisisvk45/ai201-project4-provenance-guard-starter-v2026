@@ -1,134 +1,35 @@
-# Acceptance criteria — Provenance Guard
+# Acceptance criteria: Provenance Guard
 
-Five criteria that say what "working" means for this service, written in unit 7
-**before** you built it.
+Authorship: Codex drafted these criteria at the student's explicit request before implementation and before running any detector or evaluation. They are AI-authored, not independently student-authored. The course asks for student-authored criteria; this disclosure does not change that requirement.
 
-**All five are yours.** None are given.
+These targets are frozen in the first project commit. In Unit 8, every target must hold in each of three trials. Targets will not be lowered after observing results. Development samples are not the held-out evaluation set.
 
-An acceptance criterion names a number or something plainly observable. *"The
-detector is accurate"* is an opinion — and perfect AI detection isn't possible
-anyway, so it's an opinion about something nobody can deliver. *"Of 10 pieces I
-wrote myself, at most 1 is labelled high-confidence AI"* is a criterion.
+## 1. Limit false accusations
 
-Under each, write a sentence or two on **why that target**. *"I allow at most 1
-false positive in 10 because on a writing site a wrong accusation costs more
-than a missed detection"* is a real answer.
+On 20 previously unused, independently human-authored English passages of 50–250 words, at most one passage per trial may receive `guess="ai"`. Include at least five examples of plain writing and five of formal writing. Record author/source and exact text before scoring; synthetic human-like prose is ineligible. Returning `unsure` is not a false accusation.
 
-> Missing your own targets next unit costs you nothing. Setting a target so
-> easy you can't miss it does.
+**Why this target:** A wrong accusation harms a writer more than a missed detection harms this prototype. A 5% empirical ceiling is a meaningful first check, not evidence of a 5% population error rate; 20 examples cannot establish production reliability.
 
----
+## 2. Separate known origins
 
-## Pick numbers you can defend
+On the 20 human passages above and 20 AI-generated English passages matched by topic and approximate length, the median combined AI-likeness score for AI passages must exceed the human median by at least 0.20 in every trial. Freeze both sets before evaluation and keep them separate from development examples.
 
-**Cover at least three of these five areas.** They're prompts, not a form.
+**Why this target:** A system that calls everything unsure could satisfy criterion 1 while providing no useful signal. A 0.20 median separation demands discrimination, although overlapping distributions can still produce errors.
 
-| Area | A question it could answer |
-|---|---|
-| False positives | How often may a human's writing get called AI? |
-| Score spread | How far apart should clearly-AI and clearly-human text score? |
-| Label coverage | Is every one of your three labels actually reachable? |
-| The appeal path | Does an appeal always change status and always get recorded? |
-| Bad input | What happens when `text` is missing, empty, or enormous? |
+## 3. Cover all labels and handle weak evidence
 
-Two things worth knowing before you pick numbers:
+Across a frozen development fixture set, real local model calls must produce all three labels at least once. Independently, every finite score from 0 through 1 must map to exactly one label: human at `score <= 0.25`, unsure at `0.25 < score < 0.80`, AI at `score >= 0.80`. Verify boundaries and a 1,001-point grid. Every accepted text with fewer than 40 words, fewer than three sentences, or more than 400 model tokens must return `unsure` and explain the evidence limit.
 
-- **The expensive mistake is one-sided.** Missing some AI text costs the site a
-  little. Accusing a real writer costs that person a lot. A criterion that
-  treats both errors as equally bad is describing a system nobody would ship.
-- **Unit 8 tests across three trials, and the target has to hold across all
-  three.** Your first signal runs a model, so identical input can score
-  differently twice. A target of "at most 1 in 10" against trials of 2, 1, 2 is
-  a **miss**.
+**Why this target:** The middle band is an explicit product state. Boundary checks prevent gaps, while the evidence gate prevents a confident decision about a short fragment or an unexamined tail. Fixture coverage proves reachability, not accuracy.
 
----
-## 1.
+## 4. Preserve decisions and appeals
 
-<!-- Your criterion. It must name a number. -->
+For ten successful submissions followed by ten valid appeals, all ten appeals must return `under_review`, preserve their exact reasoning, and leave the original decision unchanged in the JSONL audit log. After a fresh service process starts against that log, all ten content lookups must still report `under_review`. An unknown content ID must return 404 without creating an appeal. An audit-write failure must return 503 instead of claiming success.
 
+**Why this target:** An appeal is the recovery path when detection fails. A success response without durable evidence is worse than an explicit temporary failure. Restart recovery matters even for a laptop prototype.
 
+## 5. Reject invalid requests before inference
 
-**Why this target:**
+All cases in a committed malformed-input suite must return a structured JSON 4xx response, make zero detector calls, and create zero decision/appeal records: non-JSON media type, malformed JSON, non-object JSON, absent/null/non-string/blank fields, fewer than three words, text over 10,000 characters, creator ID outside `[A-Za-z0-9_.-]{1,128}`, appeal reasoning over 2,000 characters, malformed content IDs, and bodies over 65,536 bytes. Accepted requests must contain all documented response fields with finite scores in `[0,1]`.
 
-
-
----
-
-## 2.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 3.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 4.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 5.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-<!-- ─────────────────────────────────────────────────────────────────────────
-     UNIT 8 — read this before you change anything above.
-
-     If a criterion turns out to be BROKEN rather than merely unmet, you can
-     revise it, and that earns credit. But never delete or edit the original
-     line. Add the revision underneath, like this:
-
-         ## 2. Uncertain cases land in the unsure band
-
-         The system handles uncertain cases well.
-
-         **Why this target:** ...
-
-         > **Revised in unit 8:** Text I judged borderline scores between
-         > 0.4 and 0.6 in at least 4 of 5 cases.
-         >
-         > **Why revised:** "well" gave me nothing to check. I couldn't
-         > reach a verdict from it at all.
-
-     That's a revision because the criterion couldn't be MEASURED.
-
-     Lowering a target because you missed it is not a revision, and it costs
-     you the point:
-
-         ✗ "At most 1 of 10 of my own pieces flagged as AI" → "at most 3
-            of 10", because 1 of 10 turned out to be hard.
-
-     A number you missed stays where it is, gets diagnosed, and gets a fix
-     attempted. That's where the points are.
-     ───────────────────────────────────────────────────────────────────────── -->
+**Why this target:** Invalid input should cost a validation check, not a model invocation. Explicit size and type limits bound work and give clients actionable errors. A rejection log entry is allowed; a fabricated decision is not.
