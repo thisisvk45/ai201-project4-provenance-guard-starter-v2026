@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="title">Provenance Guard: score, explain, and review</title>
+  <desc id="desc">A submission is validated, measured by local GPT-2 and stylometry, combined with uncertainty checks, saved to an audit log, and returned with one of three labels. A separate appeal preserves the original decision and records an under-review status that survives restart.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#4B54A8" stroke-width="1.6"/></marker>
+    <style>
+      .title{font-size:22px;font-weight:600;fill:#1A1A18}
+      .heading{font-size:15px;font-weight:600;fill:#1A1A18}
+      .body{font-size:13px;fill:#4A4A45}
+      .muted{font-size:12px;fill:#6B6B64}
+      .mono{font-family:SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;fill:#2A2F6B}
+      .stage{font-size:11px;letter-spacing:1.3px;font-weight:600;fill:#4B54A8}
+      .path{fill:none;stroke:#4B54A8;stroke-width:1.6;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect x="1" y="1" width="1118" height="558" rx="14" fill="#FFFFFF" stroke="#E3E3DE"/>
+  <text x="28" y="40" class="title">Provenance Guard</text>
+  <text x="28" y="65" class="body">Two signals produce an estimate. Every decision has an explanation and a path to review.</text>
+  <line x1="28" y1="85" x2="1092" y2="85" stroke="#E3E3DE"/>
+  <text x="28" y="110" class="stage">01 / ESTIMATE</text>
+
+  <rect x="28" y="166" width="174" height="108" rx="9" fill="#F4F4F1" stroke="#B5B5AD"/>
+  <text x="44" y="192" class="mono">POST /submit</text>
+  <text x="44" y="218" class="heading">Validate input</text>
+  <text x="44" y="240" class="body">text + creator_id</text>
+  <text x="44" y="259" class="muted">Reject invalid requests</text>
+
+  <rect x="242" y="132" width="210" height="78" rx="9" fill="#EEF0FB" stroke="#4B54A8"/>
+  <text x="258" y="158" class="heading">GPT-2 · 70%</text>
+  <text x="258" y="180" class="body">Contextual predictability</text>
+  <text x="258" y="198" class="muted">First 400 model tokens</text>
+  <rect x="242" y="230" width="210" height="78" rx="9" fill="#EEF0FB" stroke="#4B54A8"/>
+  <text x="258" y="256" class="heading">Stylometry · 30%</text>
+  <text x="258" y="278" class="body">Sentence spread, word variety,</text>
+  <text x="258" y="296" class="body">and punctuation density</text>
+  <path d="M202 220 H222 V171 H240" class="path"/>
+  <path d="M222 220 V269 H240" class="path"/>
+
+  <rect x="492" y="166" width="220" height="108" rx="9" fill="#F4F4F1" stroke="#B5B5AD"/>
+  <text x="508" y="192" class="heading">Combine + check coverage</text>
+  <text x="508" y="216" class="body">Large signal gap → soften score</text>
+  <text x="508" y="238" class="body">Short or truncated → unsure</text>
+  <text x="508" y="259" class="muted">Score is not proof of authorship</text>
+  <path d="M452 171 H472 V220 H490" class="path"/>
+  <path d="M452 269 H472 V220" fill="none" stroke="#4B54A8" stroke-width="1.6"/>
+
+  <rect x="752" y="166" width="144" height="108" rx="9" fill="#F4F4F1" stroke="#B5B5AD"/>
+  <text x="768" y="192" class="heading">Save decision</text>
+  <text x="768" y="217" class="mono">audit.jsonl</text>
+  <text x="768" y="240" class="body">Scores + evidence</text>
+  <text x="768" y="259" class="muted">Flush before reply</text>
+  <path d="M712 220 H750" class="path"/>
+
+  <rect x="936" y="166" width="156" height="108" rx="9" fill="#EEF0FB" stroke="#4B54A8"/>
+  <text x="952" y="192" class="heading">Return estimate</text>
+  <text x="952" y="216" class="mono" style="font-size:11px">human / unsure / ai</text>
+  <text x="952" y="240" class="body">Label + score</text>
+  <text x="952" y="259" class="muted">content_id for review</text>
+  <path d="M896 220 H934" class="path"/>
+
+  <line x1="28" y1="333" x2="1092" y2="333" stroke="#E3E3DE"/>
+  <text x="28" y="361" class="stage">02 / REVIEW REQUEST</text>
+
+  <rect x="28" y="383" width="222" height="96" rx="9" fill="#F4F4F1" stroke="#B5B5AD"/>
+  <text x="44" y="411" class="mono">POST /appeal</text>
+  <text x="44" y="437" class="heading">Request a review</text>
+  <text x="44" y="459" class="body">content_id + reasoning</text>
+  <rect x="290" y="383" width="222" height="96" rx="9" fill="#F4F4F1" stroke="#B5B5AD"/>
+  <text x="306" y="411" class="heading">Find original decision</text>
+  <text x="306" y="437" class="body">Keep its label and scores</text>
+  <text x="306" y="459" class="muted">Unknown ID → 404</text>
+  <path d="M250 431 H288" class="path"/>
+  <rect x="552" y="383" width="242" height="96" rx="9" fill="#EEF0FB" stroke="#4B54A8"/>
+  <text x="568" y="411" class="heading">Append appeal event</text>
+  <text x="568" y="437" class="mono">status = under_review</text>
+  <text x="568" y="459" class="body">Keep the writer’s exact reason</text>
+  <path d="M512 431 H550" class="path"/>
+  <rect x="834" y="383" width="258" height="96" rx="9" fill="#EEF0FB" stroke="#4B54A8"/>
+  <text x="850" y="411" class="mono">GET /content/&lt;id&gt;</text>
+  <text x="850" y="437" class="heading">Read current status</text>
+  <text x="850" y="459" class="body">Original decision + appeal history</text>
+  <path d="M794 431 H832" class="path"/>
+
+  <text x="28" y="520" class="body">An appeal survives restart. It requests a review; it does not automatically change the authorship estimate.</text>
+  <text x="28" y="541" class="muted">Local Flask service · no API key · one process · no automatic removal or account penalty</text>
+</svg>
