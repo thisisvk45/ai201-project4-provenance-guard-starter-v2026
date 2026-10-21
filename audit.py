@@ -144,7 +144,11 @@ def read_entries(limit: int | None = None) -> list[dict]:
         if not config.AUDIT_LOG.exists():
             return []
         entries = []
-        for number, line in enumerate(config.AUDIT_LOG.read_text(encoding="utf-8").splitlines(), 1):
+        try:
+            lines = config.AUDIT_LOG.read_text(encoding="utf-8").splitlines()
+        except UnicodeDecodeError as exc:
+            raise AuditCorrupt("Audit history is not valid UTF-8") from exc
+        for number, line in enumerate(lines, 1):
             if not line.strip():
                 continue
             try:

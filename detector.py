@@ -153,7 +153,8 @@ def signal_details(text: str) -> dict:
     steepness = 1.6    # how sharply the score moves either side of it
 
     # Logistic on log-perplexity. Low perplexity -> high AI score.
-    score = 1.0 / (1.0 + (ppl / midpoint) ** steepness)
+    exponent = steepness * (math.log(ppl) - math.log(midpoint))
+    score = 1.0 / (1.0 + math.exp(min(700.0, exponent)))
     details["model_score"] = round(min(max(score, 0.0), 1.0), 4)
     return details
 

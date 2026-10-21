@@ -201,5 +201,11 @@ class ServiceTests(unittest.TestCase):
         for value in ["-1", "abc", "1.2", "999999999999999999", "²", "1000001"]:
             self.assertEqual(self.client.get("/log", query_string={"limit": value}).status_code, 400)
 
+    def test_non_utf8_history_is_reported_as_storage_failure(self):
+        self.log.write_bytes(b"\xff\xfe")
+        self.assertEqual(self.client.get("/log").status_code, 503)
+        self.assertEqual(self.client.post("/submit", json={"text": TEXT, "creator_id": "x"}).status_code, 503)
+        self.model.assert_not_called()
+
 if __name__ == "__main__":
     unittest.main()

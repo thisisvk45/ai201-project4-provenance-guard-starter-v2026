@@ -1,0 +1,30 @@
+test_bad_scores_fail_instead_of_clipping (tests.test_service.ScoringTests.test_bad_scores_fail_instead_of_clipping) ... ok
+test_complete_bands_and_boundaries (tests.test_service.ScoringTests.test_complete_bands_and_boundaries) ... ok
+test_disagreement_and_weak_evidence (tests.test_service.ScoringTests.test_disagreement_and_weak_evidence) ... ok
+test_style_neutral_on_sparse_evidence (tests.test_service.ScoringTests.test_style_neutral_on_sparse_evidence) ... ok
+test_style_varies_and_stays_bounded (tests.test_service.ScoringTests.test_style_varies_and_stays_bounded) ... ok
+test_appeal_preserves_original_and_exact_reason (tests.test_service.ServiceTests.test_appeal_preserves_original_and_exact_reason) ... ok
+test_busy_detector_is_explicit (tests.test_service.ServiceTests.test_busy_detector_is_explicit) ... ok
+test_corrupt_history_is_visible (tests.test_service.ServiceTests.test_corrupt_history_is_visible) ... [2026-10-21 18:33:50,485] ERROR in app: Audit storage error: AuditCorrupt
+[2026-10-21 18:33:50,485] ERROR in app: Audit storage error: AuditCorrupt
+[2026-10-21 18:33:50,485] ERROR in app: Audit storage error: AuditCorrupt
+ok
+test_detector_failure_does_not_create_decision (tests.test_service.ServiceTests.test_detector_failure_does_not_create_decision) ... [2026-10-21 18:33:50,486] ERROR in app: Detector unavailable: DetectorUnavailable
+ok
+test_invalid_requests_never_infer (tests.test_service.ServiceTests.test_invalid_requests_never_infer) ... ok
+test_log_limit_and_concurrent_append (tests.test_service.ServiceTests.test_log_limit_and_concurrent_append) ... ok
+test_non_utf8_history_is_reported_as_storage_failure (tests.test_service.ServiceTests.test_non_utf8_history_is_reported_as_storage_failure) ... [2026-10-21 18:33:50,498] ERROR in app: Audit storage error: AuditCorrupt
+[2026-10-21 18:33:50,498] ERROR in app: Audit storage error: AuditCorrupt
+ok
+test_nonfinite_model_result_does_not_create_decision (tests.test_service.ServiceTests.test_nonfinite_model_result_does_not_create_decision) ... ok
+test_response_and_durable_decision (tests.test_service.ServiceTests.test_response_and_durable_decision) ... ok
+test_short_and_truncated_text_are_unsure (tests.test_service.ServiceTests.test_short_and_truncated_text_are_unsure) ... ok
+test_unknown_and_invalid_appeals (tests.test_service.ServiceTests.test_unknown_and_invalid_appeals) ... ok
+test_write_failures_do_not_claim_success (tests.test_service.ServiceTests.test_write_failures_do_not_claim_success) ... [2026-10-21 18:33:50,503] ERROR in app: Audit storage error: OSError
+[2026-10-21 18:33:50,503] ERROR in app: Audit storage error: OSError
+ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.027s
+
+OK
