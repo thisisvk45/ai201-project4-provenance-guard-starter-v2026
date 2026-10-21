@@ -24,7 +24,7 @@ PORT = int(os.getenv("PORT", "5000"))
 # Flask's debug mode gives anyone who can reach the service an interactive
 # Python prompt inside your process. Fine on loopback, a gift to strangers
 # anywhere else — so it turns itself off the moment HOST isn't loopback.
-DEBUG = os.getenv("AI201_DEBUG", "1") == "1" and HOST in ("127.0.0.1", "localhost")
+DEBUG = os.getenv("AI201_DEBUG", "0") == "1" and HOST in ("127.0.0.1", "localhost")
 
 
 # ─── The local model ─────────────────────────────────────────────────────────
@@ -54,8 +54,17 @@ DETECTOR_MAX_TOKENS = 400
 # down BEFORE you code it, and to put the numbers in your README. Whatever you
 # decide, it goes here.
 
-WEIGHT_MODEL_SIGNAL = 0.5
-WEIGHT_STYLE_SIGNAL = 0.5
+WEIGHT_MODEL_SIGNAL = 0.7
+WEIGHT_STYLE_SIGNAL = 0.3
+DISAGREEMENT_THRESHOLD = 0.5
+DISAGREEMENT_SHRINK = 0.5
+WEAK_EVIDENCE_SHRINK = 0.25
+MIN_CONFIDENT_WORDS = 40
+MIN_CONFIDENT_SENTENCES = 3
+MAX_TEXT_CHARS = 10_000
+MAX_BODY_BYTES = 65_536
+MAX_REASONING_CHARS = 2_000
+SCORING_VERSION = "unit7-v1"
 
 
 # ─── Thresholds (Milestone 5) ────────────────────────────────────────────────
@@ -71,8 +80,8 @@ WEIGHT_STYLE_SIGNAL = 0.5
 # getting through. There is no setting that avoids the trade — only settings
 # that decide who pays for it.
 
-HUMAN_THRESHOLD = 0.35
-AI_THRESHOLD = 0.65
+HUMAN_THRESHOLD = 0.25
+AI_THRESHOLD = 0.80
 
 # ⚠️ One thing that catches people out in Milestone 5. A weighted average can
 # only land between its two inputs — so while `style_signal` is still the stub
@@ -105,6 +114,6 @@ RATE_LIMIT_STORAGE = "memory://"
 
 # ─── Paths ───────────────────────────────────────────────────────────────────
 
-LOG_DIR = ROOT / "logs"
+LOG_DIR = Path(os.getenv("AI201_LOG_DIR", str(ROOT / "logs")))
 AUDIT_LOG = LOG_DIR / "audit.jsonl"
 RESULTS_DIR = ROOT / "results"
