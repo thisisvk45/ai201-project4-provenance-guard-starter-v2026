@@ -1,0 +1,1355 @@
+{
+  "timestamp": "2026-10-21T22:50:00.028310+00:00",
+  "run_id": "9d6a7f4076",
+  "base_url": "http://127.0.0.1:62804",
+  "python": "3.12.13 (main, Mar 25 2026, 03:16:06) [Clang 22.1.1 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "fixture_sha256": "2a4d7c9903c16b74972cef9bf3a25c2c3f2049d825511486922f2e86afde888d",
+  "code_commit": "c048a6e3d672fc0c4c6fa98f809344c1a9cc8142",
+  "inference": "real local GPT-2; no mocked scores",
+  "samples": [
+    {
+      "fixture_id": "ai_original",
+      "category": "AI-generated",
+      "provenance": "Written by Codex for this development fixture; not human-authored.",
+      "request": {
+        "text": "A reliable service should be simple to use and easy to understand. It should accept a request and return a clear response. It should record important decisions so that people can review them later. When a mistake occurs, the service should explain what happened and offer a way to request help. These basic steps can improve trust and make the service more useful for everyone.",
+        "creator_id": "dev_9d6a7f4076_0"
+      },
+      "http_status": 201,
+      "seconds": 2.3977,
+      "response": {
+        "combined_score": 0.71939,
+        "confidence": 0.71939,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "33c25be8-319f-498d-b48a-dfe930099179",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.7607,
+            "perplexity": 21.84343051144389,
+            "tokens_scored": 71,
+            "tokens_total": 71,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.230769,
+              "sparse_punctuation": 0.692308,
+              "uniformity": 0.817967
+            },
+            "punctuation_density": 0.092308,
+            "sentence_count": 5,
+            "sentence_length_spread": 0.182033,
+            "style_score": 0.623,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.723077,
+            "windowed_type_token_ratio": 0.784615,
+            "word_count": 65
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.7607,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.623
+      }
+    },
+    {
+      "fixture_id": "ai_repetitive",
+      "category": "AI-generated repetitive control",
+      "provenance": "Written by Codex as a deliberately repetitive control; not representative of all AI text.",
+      "request": {
+        "text": "The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use.",
+        "creator_id": "dev_9d6a7f4076_1"
+      },
+      "http_status": 201,
+      "seconds": 0.0436,
+      "response": {
+        "combined_score": 0.98292,
+        "confidence": 0.98292,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "602d2279-7754-441a-a465-5f996fbc7a87",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.9951,
+            "perplexity": 1.6186270508892133,
+            "tokens_scored": 96,
+            "tokens_total": 96,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 1.0,
+              "sparse_punctuation": 0.69697,
+              "uniformity": 1.0
+            },
+            "punctuation_density": 0.090909,
+            "sentence_count": 8,
+            "sentence_length_spread": 0.0,
+            "style_score": 0.9545,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.102273,
+            "windowed_type_token_ratio": 0.204545,
+            "word_count": 88
+          }
+        },
+        "guess": "ai",
+        "label": "This writing shows patterns often found in AI-generated text. This is an automated estimate, not proof of authorship. If this seems wrong, you can request a review.",
+        "model_score": 0.9951,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.9545
+      }
+    },
+    {
+      "fixture_id": "ai_edited",
+      "category": "Lightly edited AI",
+      "provenance": "Codex edited ai_original with contractions, a fragment, and a parenthetical; still AI-origin.",
+      "request": {
+        "text": "A reliable service should be simple to use and easy to understand. Sounds obvious, right? It should accept a request and return a clear response (and not hide the error when it fails). It should record important decisions so people can review them later. When a mistake happens, the service should explain what went wrong and offer a way to ask for help. That's the plan, anyway. These steps can improve trust, but they don't prove the system always works.",
+        "creator_id": "dev_9d6a7f4076_2"
+      },
+      "http_status": 201,
+      "seconds": 0.0402,
+      "response": {
+        "combined_score": 0.59869,
+        "confidence": 0.59869,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "d5117671-ee21-42a5-a5ee-84a60a4fbe94",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.6943,
+            "perplexity": 26.950030070610275,
+            "tokens_scored": 94,
+            "tokens_total": 94,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.15,
+              "sparse_punctuation": 0.375,
+              "uniformity": 0.498752
+            },
+            "punctuation_density": 0.1875,
+            "sentence_count": 7,
+            "sentence_length_spread": 0.501248,
+            "style_score": 0.3756,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.75,
+            "windowed_type_token_ratio": 0.825,
+            "word_count": 80
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.6943,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.3756
+      }
+    },
+    {
+      "fixture_id": "human_alice",
+      "category": "Human narrative",
+      "provenance": "Lewis Carroll, Alice’s Adventures in Wonderland (1865), chapter I. Public domain. Paragraph/line whitespace normalized.",
+      "request": {
+        "text": "The rabbit-hole went straight on like a tunnel for some way, and then dipped suddenly down, so suddenly that Alice had not a moment to think about stopping herself before she found herself falling down a very deep well. Either the well was very deep, or she fell very slowly, for she had plenty of time as she went down to look about her and to wonder what was going to happen next. First, she tried to look down and make out what she was coming to, but it was too dark to see anything; then she looked at the sides of the well, and noticed that they were filled with cupboards and book-shelves; here and there she saw maps and pictures hung upon pegs.",
+        "creator_id": "dev_9d6a7f4076_3"
+      },
+      "http_status": 201,
+      "seconds": 0.0599,
+      "response": {
+        "combined_score": 0.69661,
+        "confidence": 0.69661,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "19e04971-1a0b-4559-a8d1-9292467261f5",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.7279,
+            "perplexity": 24.330146889348974,
+            "tokens_scored": 145,
+            "tokens_total": 145,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.272441,
+              "sparse_punctuation": 0.632546,
+              "uniformity": 0.812671
+            },
+            "punctuation_density": 0.110236,
+            "sentence_count": 3,
+            "sentence_length_spread": 0.187329,
+            "style_score": 0.6236,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.637795,
+            "windowed_type_token_ratio": 0.76378,
+            "word_count": 127
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.7279,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.6236
+      }
+    },
+    {
+      "fixture_id": "human_darwin",
+      "category": "Formal human prose",
+      "provenance": "Charles Darwin, On the Origin of Species (1859), Introduction. Public domain. Paragraph/line whitespace normalized.",
+      "request": {
+        "text": "This Abstract, which I now publish, must necessarily be imperfect. I cannot here give references and authorities for my several statements; and I must trust to the reader reposing some confidence in my accuracy. No doubt errors will have crept in, though I hope I have always been cautious in trusting to good authorities alone. I can here give only the general conclusions at which I have arrived, with a few facts in illustration, but which, I hope, in most cases will suffice. No one can feel more sensible than I do of the necessity of hereafter publishing in detail all the facts, with references, on which my conclusions have been grounded; and I hope in a future work to do this.",
+        "creator_id": "dev_9d6a7f4076_4"
+      },
+      "http_status": 201,
+      "seconds": 0.0526,
+      "response": {
+        "combined_score": 0.53353,
+        "confidence": 0.53353,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.5671,
+            "perplexity": 38.01441541247537,
+            "tokens_scored": 139,
+            "tokens_total": 139,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.111475,
+              "sparse_punctuation": 0.562842,
+              "uniformity": 0.613275
+            },
+            "punctuation_density": 0.131148,
+            "sentence_count": 5,
+            "sentence_length_spread": 0.386725,
+            "style_score": 0.4552,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.606557,
+            "windowed_type_token_ratio": 0.844262,
+            "word_count": 122
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.5671,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.4552
+      }
+    },
+    {
+      "fixture_id": "human_poem",
+      "category": "Human poetry with unusual vocabulary",
+      "provenance": "Lewis Carroll, Through the Looking-Glass (1871), Jabberwocky, first three stanzas. Public domain. Indentation normalized; line breaks retained.",
+      "request": {
+        "text": "’Twas brillig, and the slithy toves\nDid gyre and gimble in the wabe;\nAll mimsy were the borogoves,\nAnd the mome raths outgrabe.\n“Beware the Jabberwock, my son!\nThe jaws that bite, the claws that catch!\nBeware the Jubjub bird, and shun\nThe frumious Bandersnatch!”\nHe took his vorpal sword in hand:\nLong time the manxome foe he sought—\nSo rested he by the Tumtum tree,\nAnd stood awhile in thought.",
+        "creator_id": "dev_9d6a7f4076_5"
+      },
+      "http_status": 201,
+      "seconds": 0.0502,
+      "response": {
+        "combined_score": 0.28626,
+        "confidence": 0.28626,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "b263e1fb-eddf-40a1-9d02-107e6c3fa453",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.1806,
+            "perplexity": 115.81329297068481,
+            "tokens_scored": 137,
+            "tokens_total": 137,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.250704,
+              "sparse_punctuation": 0.201878,
+              "uniformity": 0.776859
+            },
+            "punctuation_density": 0.239437,
+            "sentence_count": 12,
+            "sentence_length_spread": 0.223141,
+            "style_score": 0.5328,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.71831,
+            "windowed_type_token_ratio": 0.774648,
+            "word_count": 71
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.1806,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.5328
+      }
+    },
+    {
+      "fixture_id": "ai_short",
+      "category": "Short AI fragment",
+      "provenance": "Written by Codex to exercise the insufficient-evidence gate.",
+      "request": {
+        "text": "The system records the request and returns a clear response.",
+        "creator_id": "dev_9d6a7f4076_6"
+      },
+      "http_status": 201,
+      "seconds": 0.0161,
+      "response": {
+        "combined_score": 0.462882,
+        "confidence": 0.462882,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "457e3731-6d9b-428b-b199-ee12fcfa4129",
+        "evidence": {
+          "limitations": [
+            "fewer_than_40_words",
+            "fewer_than_3_sentences"
+          ],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.2879,
+            "perplexity": 79.2622302981704,
+            "tokens_scored": 11,
+            "tokens_total": 11,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.0,
+              "sparse_punctuation": 0.666667,
+              "uniformity": 1.0
+            },
+            "punctuation_density": 0.1,
+            "sentence_count": 1,
+            "sentence_length_spread": 0.0,
+            "style_score": 0.5,
+            "sufficient_evidence": false,
+            "type_token_ratio": 0.9,
+            "windowed_type_token_ratio": 0.9,
+            "word_count": 10
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.2879,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.5
+      }
+    },
+    {
+      "fixture_id": "ai_long",
+      "category": "AI text exceeding model coverage",
+      "provenance": "Codex repeated an AI-authored sentence to test coverage; not a realistic accuracy example.",
+      "request": {
+        "text": "The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response.",
+        "creator_id": "dev_9d6a7f4076_7"
+      },
+      "http_status": 201,
+      "seconds": 0.1281,
+      "response": {
+        "combined_score": 0.620725,
+        "confidence": 0.620725,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "58ab2480-3dd6-493a-b453-be7a676a106b",
+        "evidence": {
+          "limitations": [
+            "only_first_400_tokens_scored"
+          ],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.997,
+            "perplexity": 1.1854889277965952,
+            "tokens_scored": 400,
+            "tokens_total": 770,
+            "truncated": true
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 1.0,
+              "sparse_punctuation": 0.666667,
+              "uniformity": 1.0
+            },
+            "punctuation_density": 0.1,
+            "sentence_count": 70,
+            "sentence_length_spread": 0.0,
+            "style_score": 0.95,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.012857,
+            "windowed_type_token_ratio": 0.18,
+            "word_count": 700
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.997,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.95
+      }
+    },
+    {
+      "fixture_id": "ai_ornate",
+      "category": "AI-generated unusual prose",
+      "provenance": "Written by Codex before any inference as a deliberate rare-vocabulary blind-spot example. AI-origin even if the detector guesses human.",
+      "request": {
+        "text": "Kerfuffle? Beneath the alembic, a verdigris salamander mislaid its abacus; neither the quincunx nor the vespertine cartographer noticed. Hush. Seven phosphorescent thimbles pirouetted across a palimpsest while the municipal thaumaturge itemized forgotten debts, marmalade tariffs, and the unscheduled molting of a brass hippogriff. Somewhere uphill, nettles hummed. The inventory remained magnificently, irredeemably incomplete.",
+        "creator_id": "dev_9d6a7f4076_8"
+      },
+      "http_status": 201,
+      "seconds": 0.047,
+      "response": {
+        "combined_score": 0.1349,
+        "confidence": 0.1349,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "f26c8c9d-1aa1-488d-9761-a295ec8bdaee",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.1643,
+            "perplexity": 124.39565532296976,
+            "tokens_scored": 115,
+            "tokens_total": 115,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.064151,
+              "sparse_punctuation": 0.245283,
+              "uniformity": 0.018687
+            },
+            "punctuation_density": 0.226415,
+            "sentence_count": 6,
+            "sentence_length_spread": 0.981313,
+            "style_score": 0.0663,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.867925,
+            "windowed_type_token_ratio": 0.867925,
+            "word_count": 53
+          }
+        },
+        "guess": "human",
+        "label": "This writing shows patterns often found in human writing. This automated estimate does not verify who wrote it. You can request a review if it seems wrong.",
+        "model_score": 0.1643,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.0663
+      }
+    },
+    {
+      "fixture_id": "ai_original_replay",
+      "category": "AI-generated",
+      "provenance": "Written by Codex for this development fixture; not human-authored.",
+      "request": {
+        "text": "A reliable service should be simple to use and easy to understand. It should accept a request and return a clear response. It should record important decisions so that people can review them later. When a mistake occurs, the service should explain what happened and offer a way to request help. These basic steps can improve trust and make the service more useful for everyone.",
+        "creator_id": "dev_9d6a7f4076_9"
+      },
+      "http_status": 201,
+      "seconds": 0.0359,
+      "response": {
+        "combined_score": 0.71939,
+        "confidence": 0.71939,
+        "confidence_kind": "uncalibrated_ai_likeness",
+        "content_id": "e5a8fdce-b4b9-41a4-8292-fc3748de65f9",
+        "evidence": {
+          "limitations": [],
+          "model": {
+            "device": "cpu",
+            "model": "gpt2",
+            "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+            "model_score": 0.7607,
+            "perplexity": 21.84343051144389,
+            "tokens_scored": 71,
+            "tokens_total": 71,
+            "truncated": false
+          },
+          "signals_disagree": false,
+          "style": {
+            "components": {
+              "repetition": 0.230769,
+              "sparse_punctuation": 0.692308,
+              "uniformity": 0.817967
+            },
+            "punctuation_density": 0.092308,
+            "sentence_count": 5,
+            "sentence_length_spread": 0.182033,
+            "style_score": 0.623,
+            "sufficient_evidence": true,
+            "type_token_ratio": 0.723077,
+            "windowed_type_token_ratio": 0.784615,
+            "word_count": 65
+          }
+        },
+        "guess": "unsure",
+        "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+        "model_score": 0.7607,
+        "review_available": true,
+        "scoring_version": "unit7-v1",
+        "status": "decided",
+        "style_score": 0.623
+      }
+    }
+  ],
+  "appeals": [
+    {
+      "request": {
+        "content_id": "33c25be8-319f-498d-b48a-dfe930099179",
+        "reasoning": "Development review request for ai_original. Please inspect the recorded signal evidence; this is not an authorship admission. Draft context. Review requested.End."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "33c25be8-319f-498d-b48a-dfe930099179",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "602d2279-7754-441a-a465-5f996fbc7a87",
+        "reasoning": "Development review request for ai_repetitive. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "602d2279-7754-441a-a465-5f996fbc7a87",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "d5117671-ee21-42a5-a5ee-84a60a4fbe94",
+        "reasoning": "Development review request for ai_edited. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "d5117671-ee21-42a5-a5ee-84a60a4fbe94",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "19e04971-1a0b-4559-a8d1-9292467261f5",
+        "reasoning": "Development review request for human_alice. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "19e04971-1a0b-4559-a8d1-9292467261f5",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c",
+        "reasoning": "Development review request for human_darwin. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "b263e1fb-eddf-40a1-9d02-107e6c3fa453",
+        "reasoning": "Development review request for human_poem. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "b263e1fb-eddf-40a1-9d02-107e6c3fa453",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "457e3731-6d9b-428b-b199-ee12fcfa4129",
+        "reasoning": "Development review request for ai_short. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "457e3731-6d9b-428b-b199-ee12fcfa4129",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "58ab2480-3dd6-493a-b453-be7a676a106b",
+        "reasoning": "Development review request for ai_long. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "58ab2480-3dd6-493a-b453-be7a676a106b",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "f26c8c9d-1aa1-488d-9761-a295ec8bdaee",
+        "reasoning": "Development review request for ai_ornate. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "f26c8c9d-1aa1-488d-9761-a295ec8bdaee",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    },
+    {
+      "request": {
+        "content_id": "e5a8fdce-b4b9-41a4-8292-fc3748de65f9",
+        "reasoning": "Development review request for ai_original_replay. Please inspect the recorded signal evidence; this is not an authorship admission."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "e5a8fdce-b4b9-41a4-8292-fc3748de65f9",
+        "message": "Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+        "status": "under_review"
+      }
+    }
+  ],
+  "initial_health": {
+    "detector_loaded": false,
+    "detector_model": "gpt2",
+    "log_entries": 42,
+    "ok": true,
+    "rate_limiting": false
+  },
+  "audit_entries": [
+    {
+      "combined_score": 0.71939,
+      "confidence": 0.71939,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "33c25be8-319f-498d-b48a-dfe930099179",
+      "creator_id": "dev_9d6a7f4076_0",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.7607,
+          "perplexity": 21.84343051144389,
+          "tokens_scored": 71,
+          "tokens_total": 71,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.230769,
+            "sparse_punctuation": 0.692308,
+            "uniformity": 0.817967
+          },
+          "punctuation_density": 0.092308,
+          "sentence_count": 5,
+          "sentence_length_spread": 0.182033,
+          "style_score": 0.623,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.723077,
+          "windowed_type_token_ratio": 0.784615,
+          "word_count": 65
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.7607,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.623,
+      "text_length": 377,
+      "text_sha256": "ceb68967430286c52a252c49f5a9e367e9184d19133b68da4bd49dd759191f5d",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.98292,
+      "confidence": 0.98292,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "602d2279-7754-441a-a465-5f996fbc7a87",
+      "creator_id": "dev_9d6a7f4076_1",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.9951,
+          "perplexity": 1.6186270508892133,
+          "tokens_scored": 96,
+          "tokens_total": 96,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 1.0,
+            "sparse_punctuation": 0.69697,
+            "uniformity": 1.0
+          },
+          "punctuation_density": 0.090909,
+          "sentence_count": 8,
+          "sentence_length_spread": 0.0,
+          "style_score": 0.9545,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.102273,
+          "windowed_type_token_ratio": 0.204545,
+          "word_count": 88
+        }
+      },
+      "guess": "ai",
+      "label": "This writing shows patterns often found in AI-generated text. This is an automated estimate, not proof of authorship. If this seems wrong, you can request a review.",
+      "model_score": 0.9951,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.9545,
+      "text_length": 423,
+      "text_sha256": "932425c6bfb11afdb7d580c83a0a64b9c365cbdac8b61cc41f22bf78dba5e968",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.59869,
+      "confidence": 0.59869,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "d5117671-ee21-42a5-a5ee-84a60a4fbe94",
+      "creator_id": "dev_9d6a7f4076_2",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.6943,
+          "perplexity": 26.950030070610275,
+          "tokens_scored": 94,
+          "tokens_total": 94,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.15,
+            "sparse_punctuation": 0.375,
+            "uniformity": 0.498752
+          },
+          "punctuation_density": 0.1875,
+          "sentence_count": 7,
+          "sentence_length_spread": 0.501248,
+          "style_score": 0.3756,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.75,
+          "windowed_type_token_ratio": 0.825,
+          "word_count": 80
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.6943,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.3756,
+      "text_length": 456,
+      "text_sha256": "ac47043d4132a57e25ce7f3e51e36c7ef71ecfa00dddf4953f97171bd89367ee",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.69661,
+      "confidence": 0.69661,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "19e04971-1a0b-4559-a8d1-9292467261f5",
+      "creator_id": "dev_9d6a7f4076_3",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.7279,
+          "perplexity": 24.330146889348974,
+          "tokens_scored": 145,
+          "tokens_total": 145,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.272441,
+            "sparse_punctuation": 0.632546,
+            "uniformity": 0.812671
+          },
+          "punctuation_density": 0.110236,
+          "sentence_count": 3,
+          "sentence_length_spread": 0.187329,
+          "style_score": 0.6236,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.637795,
+          "windowed_type_token_ratio": 0.76378,
+          "word_count": 127
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.7279,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.6236,
+      "text_length": 652,
+      "text_sha256": "f2f21058ac6db4515e0902d43283b5d1e2237d65d353ff2da0d628cd4501a6c4",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.53353,
+      "confidence": 0.53353,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c",
+      "creator_id": "dev_9d6a7f4076_4",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.5671,
+          "perplexity": 38.01441541247537,
+          "tokens_scored": 139,
+          "tokens_total": 139,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.111475,
+            "sparse_punctuation": 0.562842,
+            "uniformity": 0.613275
+          },
+          "punctuation_density": 0.131148,
+          "sentence_count": 5,
+          "sentence_length_spread": 0.386725,
+          "style_score": 0.4552,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.606557,
+          "windowed_type_token_ratio": 0.844262,
+          "word_count": 122
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.5671,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.4552,
+      "text_length": 686,
+      "text_sha256": "08d5989046b8b6f60e9dfa9f0584795a57df3abdb37ee19e16a3aae41ab11dca",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.28626,
+      "confidence": 0.28626,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "b263e1fb-eddf-40a1-9d02-107e6c3fa453",
+      "creator_id": "dev_9d6a7f4076_5",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.1806,
+          "perplexity": 115.81329297068481,
+          "tokens_scored": 137,
+          "tokens_total": 137,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.250704,
+            "sparse_punctuation": 0.201878,
+            "uniformity": 0.776859
+          },
+          "punctuation_density": 0.239437,
+          "sentence_count": 12,
+          "sentence_length_spread": 0.223141,
+          "style_score": 0.5328,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.71831,
+          "windowed_type_token_ratio": 0.774648,
+          "word_count": 71
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.1806,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.5328,
+      "text_length": 395,
+      "text_sha256": "e77dbff73294ec33ebe48794a664eb0ee1caf6525e4337fbbbdb42dabf2d3833",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.462882,
+      "confidence": 0.462882,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "457e3731-6d9b-428b-b199-ee12fcfa4129",
+      "creator_id": "dev_9d6a7f4076_6",
+      "event": "decision",
+      "evidence": {
+        "limitations": [
+          "fewer_than_40_words",
+          "fewer_than_3_sentences"
+        ],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.2879,
+          "perplexity": 79.2622302981704,
+          "tokens_scored": 11,
+          "tokens_total": 11,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.0,
+            "sparse_punctuation": 0.666667,
+            "uniformity": 1.0
+          },
+          "punctuation_density": 0.1,
+          "sentence_count": 1,
+          "sentence_length_spread": 0.0,
+          "style_score": 0.5,
+          "sufficient_evidence": false,
+          "type_token_ratio": 0.9,
+          "windowed_type_token_ratio": 0.9,
+          "word_count": 10
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.2879,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.5,
+      "text_length": 60,
+      "text_sha256": "a29bc57c4d0662d8c62b1b81c2a4c673f81d4aa259a17427fe0e399d48e6b42a",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.620725,
+      "confidence": 0.620725,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "58ab2480-3dd6-493a-b453-be7a676a106b",
+      "creator_id": "dev_9d6a7f4076_7",
+      "event": "decision",
+      "evidence": {
+        "limitations": [
+          "only_first_400_tokens_scored"
+        ],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.997,
+          "perplexity": 1.1854889277965952,
+          "tokens_scored": 400,
+          "tokens_total": 770,
+          "truncated": true
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 1.0,
+            "sparse_punctuation": 0.666667,
+            "uniformity": 1.0
+          },
+          "punctuation_density": 0.1,
+          "sentence_count": 70,
+          "sentence_length_spread": 0.0,
+          "style_score": 0.95,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.012857,
+          "windowed_type_token_ratio": 0.18,
+          "word_count": 700
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.997,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.95,
+      "text_length": 4269,
+      "text_sha256": "fbbfd53759b2d253b4ce7d24685d15e4104a90d749e895e2250959b414b11244",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.1349,
+      "confidence": 0.1349,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "f26c8c9d-1aa1-488d-9761-a295ec8bdaee",
+      "creator_id": "dev_9d6a7f4076_8",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.1643,
+          "perplexity": 124.39565532296976,
+          "tokens_scored": 115,
+          "tokens_total": 115,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.064151,
+            "sparse_punctuation": 0.245283,
+            "uniformity": 0.018687
+          },
+          "punctuation_density": 0.226415,
+          "sentence_count": 6,
+          "sentence_length_spread": 0.981313,
+          "style_score": 0.0663,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.867925,
+          "windowed_type_token_ratio": 0.867925,
+          "word_count": 53
+        }
+      },
+      "guess": "human",
+      "label": "This writing shows patterns often found in human writing. This automated estimate does not verify who wrote it. You can request a review if it seems wrong.",
+      "model_score": 0.1643,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.0663,
+      "text_length": 428,
+      "text_sha256": "41c1e9190cfbcbde4bb82f6bff52c3e80630898c455f6876f5910fed22aebe9f",
+      "timestamp": "2026-10-21T22:50:02+00:00"
+    },
+    {
+      "combined_score": 0.71939,
+      "confidence": 0.71939,
+      "confidence_kind": "uncalibrated_ai_likeness",
+      "content_id": "e5a8fdce-b4b9-41a4-8292-fc3748de65f9",
+      "creator_id": "dev_9d6a7f4076_9",
+      "event": "decision",
+      "evidence": {
+        "limitations": [],
+        "model": {
+          "device": "cpu",
+          "model": "gpt2",
+          "model_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+          "model_score": 0.7607,
+          "perplexity": 21.84343051144389,
+          "tokens_scored": 71,
+          "tokens_total": 71,
+          "truncated": false
+        },
+        "signals_disagree": false,
+        "style": {
+          "components": {
+            "repetition": 0.230769,
+            "sparse_punctuation": 0.692308,
+            "uniformity": 0.817967
+          },
+          "punctuation_density": 0.092308,
+          "sentence_count": 5,
+          "sentence_length_spread": 0.182033,
+          "style_score": 0.623,
+          "sufficient_evidence": true,
+          "type_token_ratio": 0.723077,
+          "windowed_type_token_ratio": 0.784615,
+          "word_count": 65
+        }
+      },
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.7607,
+      "scoring_version": "unit7-v1",
+      "status": "decided",
+      "style_score": 0.623,
+      "text_length": 377,
+      "text_sha256": "ceb68967430286c52a252c49f5a9e367e9184d19133b68da4bd49dd759191f5d",
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.71939,
+      "content_id": "33c25be8-319f-498d-b48a-dfe930099179",
+      "creator_id": "dev_9d6a7f4076_0",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.7607,
+      "reasoning": "Development review request for ai_original. Please inspect the recorded signal evidence; this is not an authorship admission. Draft context. Review requested.End.",
+      "status": "under_review",
+      "style_score": 0.623,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.98292,
+      "content_id": "602d2279-7754-441a-a465-5f996fbc7a87",
+      "creator_id": "dev_9d6a7f4076_1",
+      "event": "appeal",
+      "guess": "ai",
+      "label": "This writing shows patterns often found in AI-generated text. This is an automated estimate, not proof of authorship. If this seems wrong, you can request a review.",
+      "model_score": 0.9951,
+      "reasoning": "Development review request for ai_repetitive. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.9545,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.59869,
+      "content_id": "d5117671-ee21-42a5-a5ee-84a60a4fbe94",
+      "creator_id": "dev_9d6a7f4076_2",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.6943,
+      "reasoning": "Development review request for ai_edited. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.3756,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.69661,
+      "content_id": "19e04971-1a0b-4559-a8d1-9292467261f5",
+      "creator_id": "dev_9d6a7f4076_3",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.7279,
+      "reasoning": "Development review request for human_alice. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.6236,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.53353,
+      "content_id": "bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c",
+      "creator_id": "dev_9d6a7f4076_4",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.5671,
+      "reasoning": "Development review request for human_darwin. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.4552,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.28626,
+      "content_id": "b263e1fb-eddf-40a1-9d02-107e6c3fa453",
+      "creator_id": "dev_9d6a7f4076_5",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.1806,
+      "reasoning": "Development review request for human_poem. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.5328,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.462882,
+      "content_id": "457e3731-6d9b-428b-b199-ee12fcfa4129",
+      "creator_id": "dev_9d6a7f4076_6",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.2879,
+      "reasoning": "Development review request for ai_short. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.5,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.620725,
+      "content_id": "58ab2480-3dd6-493a-b453-be7a676a106b",
+      "creator_id": "dev_9d6a7f4076_7",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.997,
+      "reasoning": "Development review request for ai_long. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.95,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.1349,
+      "content_id": "f26c8c9d-1aa1-488d-9761-a295ec8bdaee",
+      "creator_id": "dev_9d6a7f4076_8",
+      "event": "appeal",
+      "guess": "human",
+      "label": "This writing shows patterns often found in human writing. This automated estimate does not verify who wrote it. You can request a review if it seems wrong.",
+      "model_score": 0.1643,
+      "reasoning": "Development review request for ai_ornate. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.0663,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    },
+    {
+      "combined_score": 0.71939,
+      "content_id": "e5a8fdce-b4b9-41a4-8292-fc3748de65f9",
+      "creator_id": "dev_9d6a7f4076_9",
+      "event": "appeal",
+      "guess": "unsure",
+      "label": "We cannot reliably tell how this writing was produced. No conclusion about authorship has been made. You can request a review.",
+      "model_score": 0.7607,
+      "reasoning": "Development review request for ai_original_replay. Please inspect the recorded signal evidence; this is not an authorship admission.",
+      "status": "under_review",
+      "style_score": 0.623,
+      "timestamp": "2026-10-21T22:50:03+00:00"
+    }
+  ],
+  "restarted_health": {
+    "detector_loaded": false,
+    "detector_model": "gpt2",
+    "log_entries": 62,
+    "ok": true,
+    "rate_limiting": false
+  },
+  "restart_checks": [
+    {
+      "content_id": "33c25be8-319f-498d-b48a-dfe930099179",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "602d2279-7754-441a-a465-5f996fbc7a87",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "d5117671-ee21-42a5-a5ee-84a60a4fbe94",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "19e04971-1a0b-4559-a8d1-9292467261f5",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "b263e1fb-eddf-40a1-9d02-107e6c3fa453",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "457e3731-6d9b-428b-b199-ee12fcfa4129",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "58ab2480-3dd6-493a-b453-be7a676a106b",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "f26c8c9d-1aa1-488d-9761-a295ec8bdaee",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    },
+    {
+      "content_id": "e5a8fdce-b4b9-41a4-8292-fc3748de65f9",
+      "status": "under_review",
+      "exact_reasoning_retained": true,
+      "original_unchanged": true
+    }
+  ],
+  "label_coverage": [
+    "ai",
+    "human",
+    "unsure"
+  ],
+  "all_three_labels_reached": true,
+  "appeal_restart_pass": true,
+  "limitations": [
+    "Development fixtures are deliberately chosen and not an accuracy benchmark.",
+    "Human sources are public-domain literature, not the student's own writing or a representative held-out sample.",
+    "One repeated AI control and one unusual AI passage exercise extremes; they do not establish reliable provenance detection.",
+    "Criteria 1 and 2 require a separate frozen held-out corpus in Unit 8 and are not evaluated here."
+  ]
+}

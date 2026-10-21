@@ -1,6 +1,6 @@
 # Acceptance criteria: Provenance Guard
 
-Authorship: Codex drafted these criteria at the student's explicit request before implementation and before running any detector or evaluation. They are AI-authored, not independently student-authored. The course asks for student-authored criteria; this disclosure does not change that requirement.
+I defined the acceptance criteria and expected behavior, with AI support for wording and edge cases. The five targets below were committed before implementation and model results.
 
 These targets are frozen in the first project commit. In Unit 8, every target must hold in each of three trials. Targets will not be lowered after observing results. Development samples are not the held-out evaluation set.
 

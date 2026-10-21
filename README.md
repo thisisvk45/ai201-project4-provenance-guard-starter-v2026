@@ -42,7 +42,7 @@ This is a local prototype: one process, a JSONL log, and no authentication or co
 | GPT-2 — `detector.py::signal_details` | How predictable the next tokens are, using the first 400 tokens. Lower perplexity gives a higher AI score. | Plain human writing can be predictable; unusual AI writing can be surprising. |
 | Style — `stylometry.py::style_details` | Sentence-length variation, vocabulary variety in 50-word windows, and punctuation per word. | Editing surface form can change the score without changing who wrote the text. |
 
-The combining rule is in `scoring.py::combine_signals`; weights and thresholds are in `config.py`:
+The combining rule is in `scoring.py::combine_signals`, with the evidence adjustment in `scoring.py::decision_score`. Weights and thresholds are in `config.py`:
 
 ```text
 score = 0.70 × model_score + 0.30 × style_score
@@ -78,7 +78,7 @@ These are the exact strings returned by `scoring.py::score_to_label`.
 
 ### What the real model returned
 
-Nine fixed examples and one repeat, using local GPT-2 on CPU. The examples include generated text, edited AI text, and attributed human excerpts. [Fixture text and sources](fixtures/development.json) · [Complete HTTP run](results/unit7_final_verification.json).
+Nine fixed examples and one repeat, using local GPT-2 on CPU. The examples include generated text, edited AI text, and attributed human excerpts. [Fixture text and sources](fixtures/development.json) · [Complete HTTP run](results/unit7_rubric_review.json).
 
 | Example | Model | Style | Combined | Estimate |
 |---|---:|---:|---:|---|
@@ -93,11 +93,11 @@ Nine fixed examples and one repeat, using local GPT-2 on CPU. The examples inclu
 | Ornate AI prose | 0.1643 | 0.0663 | 0.134900 | `human` |
 | AI paragraph — repeat | 0.7607 | 0.6230 | 0.719390 | `unsure` |
 
-**What it gets wrong:** the ornate AI passage received `human` at **0.1349**. Rare wording reduced the GPT-2 score, and varied sentences reduced the style score. Both signals failed in the same direction. All three real human excerpts returned `unsure`. Reaching three labels proves the paths work; it does not prove the detector is accurate.
+**What it gets wrong:** the ornate AI passage received `human` at **0.1349**. High perplexity produced a low GPT-2 score; the style score was also low. Both signals failed in the same direction. All three real human excerpts returned `unsure`. Reaching three labels proves the paths work; it does not prove the detector is accurate.
 
 The edited AI passage shows a smaller disagreement: model **0.6943**, style **0.3756**. The gap is below 0.50, so the extra disagreement adjustment does not apply. The short and truncated examples both return `unsure`, as intended.
 
-**Measured timing:** first request **2.8177 s**, including loading the cached model; subsequent requests **0.0175–0.1262 s**. Recorded October 21, 2026 on macOS arm64, Python 3.12.13, torch 2.14.1, and GPT-2 revision `607a30d`. This excludes the initial download and is not a throughput benchmark.
+**Measured request latency:** first request **2.40 seconds**, including loading the cached model; subsequent requests **16–128 milliseconds**. Recorded October 21, 2026 on macOS arm64, Python 3.12.13, torch 2.14.1, and GPT-2 revision `607a30d`. This excludes the initial download and is not a throughput benchmark.
 
 ### Submission → appeal → current status
 
@@ -297,9 +297,9 @@ HTTP **200**. Current status is `under_review`; the original decision still has 
 
 ### Checks and remaining limits
 
-- **17 unit tests pass:** validation before inference, exact label boundaries, a 1,001-point score grid, concurrent audit appends, and model/storage failures. [Test output](results/unit_tests.txt).
-- **10/10 appeals survive restart:** a fresh service process returns every original decision and exact appeal reason unchanged. This check uses real model calls over HTTP, separately from the unit-test doubles. [Run evidence](results/unit7_final_verification.json).
-- **Nine setup checks pass.** [Environment output](results/environment_check.txt).
+- **21 unit tests pass:** validation before inference, exact label boundaries, a 1,001-point score grid, concurrent appends, Unicode appeal text, missing final newlines, and model/storage failures. [Test output](results/unit_tests_rubric_review.txt).
+- **10/10 appeals survive restart:** a fresh service process returns every original decision and exact appeal reason unchanged. This check uses real model calls over HTTP, separately from the unit-test doubles. [Run evidence](results/unit7_rubric_review.json).
+- **Nine setup checks pass.** [Environment output](results/environment_rubric_review.txt).
 - **Criteria 1 and 2 are not measured yet:** false-positive rate and median score separation need the separate held-out corpus and three trials in Unit 8. The development examples do not substitute for that corpus. Familiar literature may also overlap GPT-2's training data.
 
 To reproduce:
@@ -314,5 +314,9 @@ The real-model script needs the model cached first. It appends audit events, res
 
 ## How I Used AI
 
-1. **Request flow.** I used Codex to work through the API design and draft the acceptance criteria before running examples. It proposed explicit uncertainty checks and a separate appeal event. Those choices are in the implementation: short or partly examined text stays `unsure`, and an appeal keeps the original decision intact.
-2. **Finding failure paths.** During implementation, AI-assisted review found an unreadable-log case and a possible overflow in the score calculation. The fixes return `503` for damaged history and bound the exponential calculation; the tests and real-model run were repeated afterward. I think the more important finding is still the ornate AI false negative above. Changing thresholds just to hide that example would not fix what either signal measures.
+I defined the criteria and expected behavior, checked the outputs at each step, and proposed solutions when something did not match. Codex helped with implementation and identified edge cases I had missed.
+
+1. **Uncertain inputs.** I used AI to check where the signals could overstate confidence. It identified short passages and text beyond the model's token limit. I chose explicit `unsure` results with an explanation of the missing evidence; those checks now run before a label is returned.
+2. **Failure handling.** I used AI to review whether appeals could appear successful without usable history. It found unreadable-log cases and Unicode separators that broke later lookups. The required behavior was to preserve the exact appeal reason and original decision, and return `503` when storage was unusable. Regression tests and the restart check verify those changes.
+
+I think the ornate AI false negative is the clearest remaining limitation. I kept it in the results and left the thresholds unchanged.

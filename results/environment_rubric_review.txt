@@ -1,0 +1,26 @@
+
+AI201 environment check
+------------------------------------------------------------
+[PASS] Python version
+         3.12.13 on Darwin
+[PASS] Virtual environment
+         /private/tmp/provenance-guard-work/.venv
+[PASS] Pinned packages
+         all 6 import cleanly
+[PASS] Free disk space
+         50.3 GB
+[PASS] Memory
+         16.0 GB
+[PASS] PyTorch
+         2.14.1
+[PASS] Flask
+         flask and flask-limiter both import
+[PASS] Detector model
+         already downloaded
+[PASS] The service
+         /ping answers — the starter works before you edit it
+------------------------------------------------------------
+9 passed, 0 failed, 0 to look at, 0 skipped
+
+You're set. See you in class.
+
