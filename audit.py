@@ -20,12 +20,17 @@ and the one you most want to compare is the one from before the change.
 """
 
 import json
+import os
 import threading
 from datetime import datetime, timezone
 
 import config
 
-_lock = threading.Lock()
+_lock = threading.RLock()
+
+
+class AuditCorrupt(OSError):
+    """Existing evidence must not silently disappear from a successful read."""
 
 
 def _now() -> str:
@@ -73,7 +78,7 @@ def log_decision(
     return _append(entry)
 
 
-def log_appeal(content_id: str, creator_id: str, reasoning: str) -> dict:
+def log_appeal(content_id: str, creator_id: str, reasoning: str, **extra) -> dict:
     """
     Record an appeal beside the original decision.
 
@@ -83,6 +88,7 @@ def log_appeal(content_id: str, creator_id: str, reasoning: str) -> dict:
     decided, that it was challenged, and in what order.
     """
     return _append({
+        **extra,
         "timestamp": _now(),
         "content_id": content_id,
         "creator_id": creator_id,
@@ -113,11 +119,15 @@ def log_rejection(creator_id: str, reason: str, **extra) -> dict:
 
 
 def _append(entry: dict) -> dict:
-    config.LOG_DIR.mkdir(parents=True, exist_ok=True)
-    line = json.dumps(entry, ensure_ascii=False)
+    line = json.dumps(entry, ensure_ascii=False, allow_nan=False)
     with _lock:
+        config.AUDIT_LOG.parent.mkdir(parents=True, exist_ok=True)
+        # Refuse to append behind corrupt history and make it look healthy.
+        read_entries()
         with config.AUDIT_LOG.open("a", encoding="utf-8") as f:
             f.write(line + "\n")
+            f.flush()
+            os.fsync(f.fileno())
     return entry
 
 
@@ -125,23 +135,26 @@ def read_entries(limit: int | None = None) -> list[dict]:
     """
     Read the log back, oldest first. `limit` keeps the most recent N.
 
-    A malformed line is skipped rather than raising — a log that can't be read
-    because of one bad row is worse than a log with a gap.
+    Corrupt records fail visibly. Never silently lose an appeal or decision.
+    Thread-safe within one service process; this is not a multi-worker store.
     """
-    if not config.AUDIT_LOG.exists():
-        return []
-
-    entries = []
-    for line in config.AUDIT_LOG.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            entries.append(json.loads(line))
-        except json.JSONDecodeError:
-            continue
-
-    return entries[-limit:] if limit else entries
+    if limit is not None and (isinstance(limit, bool) or not isinstance(limit, int) or limit < 0):
+        raise ValueError("limit must be a nonnegative integer")
+    with _lock:
+        if not config.AUDIT_LOG.exists():
+            return []
+        entries = []
+        for number, line in enumerate(config.AUDIT_LOG.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            try:
+                entry = json.loads(line)
+                if not isinstance(entry, dict):
+                    raise ValueError("record must be an object")
+                entries.append(entry)
+            except (ValueError, TypeError) as exc:
+                raise AuditCorrupt(f"Invalid audit record at line {number}") from exc
+        return entries if limit is None else entries[-limit:] if limit else []
 
 
 def clear() -> int:

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "ai_original",
+    "category": "AI-generated",
+    "provenance": "Written by Codex for this development fixture; not human-authored.",
+    "text": "A reliable service should be simple to use and easy to understand. It should accept a request and return a clear response. It should record important decisions so that people can review them later. When a mistake occurs, the service should explain what happened and offer a way to request help. These basic steps can improve trust and make the service more useful for everyone."
+  },
+  {
+    "id": "ai_repetitive",
+    "category": "AI-generated repetitive control",
+    "provenance": "Written by Codex as a deliberately repetitive control; not representative of all AI text.",
+    "text": "The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use. The system works well and the system is easy to use."
+  },
+  {
+    "id": "ai_edited",
+    "category": "Lightly edited AI",
+    "provenance": "Codex edited ai_original with contractions, a fragment, and a parenthetical; still AI-origin.",
+    "text": "A reliable service should be simple to use and easy to understand. Sounds obvious, right? It should accept a request and return a clear response (and not hide the error when it fails). It should record important decisions so people can review them later. When a mistake happens, the service should explain what went wrong and offer a way to ask for help. That's the plan, anyway. These steps can improve trust, but they don't prove the system always works."
+  },
+  {
+    "id": "human_alice",
+    "category": "Human narrative",
+    "provenance": "Lewis Carroll, Alice’s Adventures in Wonderland (1865), chapter I. Public domain. Paragraph/line whitespace normalized.",
+    "source": "https://www.gutenberg.org/files/11/11-h/11-h.htm",
+    "text": "The rabbit-hole went straight on like a tunnel for some way, and then dipped suddenly down, so suddenly that Alice had not a moment to think about stopping herself before she found herself falling down a very deep well. Either the well was very deep, or she fell very slowly, for she had plenty of time as she went down to look about her and to wonder what was going to happen next. First, she tried to look down and make out what she was coming to, but it was too dark to see anything; then she looked at the sides of the well, and noticed that they were filled with cupboards and book-shelves; here and there she saw maps and pictures hung upon pegs."
+  },
+  {
+    "id": "human_darwin",
+    "category": "Formal human prose",
+    "provenance": "Charles Darwin, On the Origin of Species (1859), Introduction. Public domain. Paragraph/line whitespace normalized.",
+    "source": "https://www.gutenberg.org/files/1228/1228-h/1228-h.htm",
+    "text": "This Abstract, which I now publish, must necessarily be imperfect. I cannot here give references and authorities for my several statements; and I must trust to the reader reposing some confidence in my accuracy. No doubt errors will have crept in, though I hope I have always been cautious in trusting to good authorities alone. I can here give only the general conclusions at which I have arrived, with a few facts in illustration, but which, I hope, in most cases will suffice. No one can feel more sensible than I do of the necessity of hereafter publishing in detail all the facts, with references, on which my conclusions have been grounded; and I hope in a future work to do this."
+  },
+  {
+    "id": "human_poem",
+    "category": "Human poetry with unusual vocabulary",
+    "provenance": "Lewis Carroll, Through the Looking-Glass (1871), Jabberwocky, first three stanzas. Public domain. Indentation normalized; line breaks retained.",
+    "source": "https://www.gutenberg.org/files/12/12-h/12-h.htm",
+    "text": "’Twas brillig, and the slithy toves\nDid gyre and gimble in the wabe;\nAll mimsy were the borogoves,\nAnd the mome raths outgrabe.\n“Beware the Jabberwock, my son!\nThe jaws that bite, the claws that catch!\nBeware the Jubjub bird, and shun\nThe frumious Bandersnatch!”\nHe took his vorpal sword in hand:\nLong time the manxome foe he sought—\nSo rested he by the Tumtum tree,\nAnd stood awhile in thought."
+  },
+  {
+    "id": "ai_short",
+    "category": "Short AI fragment",
+    "provenance": "Written by Codex to exercise the insufficient-evidence gate.",
+    "text": "The system records the request and returns a clear response."
+  },
+  {
+    "id": "ai_long",
+    "category": "AI text exceeding model coverage",
+    "provenance": "Codex repeated an AI-authored sentence to test coverage; not a realistic accuracy example.",
+    "text": "The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response. The system records the request and returns a clear response."
+  }
+]

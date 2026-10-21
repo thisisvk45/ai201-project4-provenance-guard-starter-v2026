@@ -25,6 +25,14 @@ Routes:
 """
 
 import uuid
+import hashlib
+import re
+import threading
+from werkzeug.exceptions import BadRequest
+
+import detector
+import stylometry
+import scoring
 
 from flask import Flask, jsonify, request
 
@@ -32,6 +40,8 @@ import audit
 import config
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = config.MAX_BODY_BYTES
+_inference_slot = threading.BoundedSemaphore(1)
 
 
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
@@ -148,99 +158,159 @@ def health():
     })
 
 
-# ── YOU BUILD THIS ────────────────────────────────────────────────────────────
+
+# ── Validated project endpoints ──────────────────────────────────────────────
+
+class APIError(Exception):
+    def __init__(self, code, message, status=400):
+        self.code, self.message, self.status = code, message, status
+
+
+@app.errorhandler(APIError)
+def api_error(exc):
+    if 400 <= exc.status < 500:
+        try:
+            audit.log_rejection("unknown", exc.code, endpoint=request.path, http_status=exc.status)
+        except OSError:
+            return jsonify(error="audit_unavailable", message="The audit store is unavailable. Try again later."), 503
+    return jsonify(error=exc.code, message=exc.message), exc.status
+
+
+@app.errorhandler(413)
+def body_too_large(exc):
+    return api_error(APIError("body_too_large", "Request body exceeds 65,536 bytes.", 413))
+
+
+@app.errorhandler(OSError)
+def storage_error(exc):
+    app.logger.error("Audit storage error: %s", type(exc).__name__)
+    return jsonify(error="audit_unavailable", message="The audit store is unavailable. Try again later."), 503
+
+
+def json_object():
+    if not request.is_json:
+        raise APIError("unsupported_media_type", "Send an application/json request.", 415)
+    try:
+        payload = request.get_json()
+    except BadRequest as exc:
+        raise APIError("invalid_json", "The body must contain valid JSON.") from exc
+    if not isinstance(payload, dict):
+        raise APIError("invalid_body", "The JSON body must be an object.")
+    return payload
+
+
+def required_string(payload, field, maximum):
+    value = payload.get(field)
+    if not isinstance(value, str) or not value.strip():
+        raise APIError("invalid_" + field, f"{field} must be a nonblank string.")
+    # Reject invalid Unicode scalars before hashing, tokenizing, or logging.
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise APIError("invalid_" + field, f"{field} must be valid Unicode text.") from exc
+    if len(value) > maximum:
+        raise APIError("oversized_" + field, f"{field} exceeds {maximum} characters.", 413)
+    return value
+
+
+def valid_content_id(value):
+    if not isinstance(value, str):
+        raise APIError("invalid_content_id", "content_id must be a UUID string.")
+    try:
+        return str(uuid.UUID(value))
+    except (ValueError, AttributeError) as exc:
+        raise APIError("invalid_content_id", "content_id must be a UUID string.") from exc
+
+
+def content_record(content_id):
+    events = audit.entries_for(content_id)
+    decisions = [e for e in events if e.get("event") == "decision" or e.get("status") == "decided"]
+    if not decisions:
+        raise APIError("not_found", "No submission exists for that content_id.", 404)
+    return decisions[0], [e for e in events if e.get("event") == "appeal"]
+
 
 @app.post("/submit")
 # @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
 def submit():
-    """
-    Take a piece of text, decide about it, log the decision, answer.
-    ← TODO — Milestones 3, 4 and 5
-
-    Expects JSON:
-        {"text": "...", "creator_id": "..."}
-
-    Should return JSON with, at minimum:
-        {"content_id": "...", "guess": "...", "confidence": 0.0, "label": "...",
-         "model_score": 0.0, "style_score": 0.0}
-
-    ⚠️ **Both signal scores go in the response, not just the log.** Unit 8's
-    `run_attacks.py` and `run_eval.py` read `model_score` and `style_score`
-    straight off this response and put them in your reports. Leave them out and
-    every row of next unit's evidence says `null` — which is exactly the
-    diagnostic you need to name a stage and a mechanism. You do not want to
-    find that out after running the attack set.
-
-    ─────────────────────────────────────────────────────────────────────────
-    Build it in three passes. Do not skip ahead — the ordering is how you tell
-    a broken route from a broken signal.
-
-    **Milestone 3 — the route answers.**
-      1. Return a hardcoded response. Confirm `curl` gets it back before you
-         add any logic at all.
-      2. Then pull `text` and `creator_id` out of the payload.
-      3. Then call ONE signal — `detector.model_signal(text)` — and put the
-         real number in. Leave confidence and label as placeholders.
-      4. Log every submission with `audit.log_decision(...)`. The content_id
-         matters: `/appeal` needs it, and a student who skips it rebuilds this
-         whole flow later.
-
-    **Milestone 4 — the second signal and the score.**
-      5. Add `stylometry.style_signal(text)`.
-      6. Combine them with `scoring.combine_signals(...)`.
-      7. Log BOTH signal scores alongside the combined one, and put them in the
-         response too. Next unit you can't diagnose anything without them.
-
-    **Milestone 5 — the label.**
-      8. `scoring.score_to_label(...)` and put the real label in the response.
-
-    ─────────────────────────────────────────────────────────────────────────
-    Worth deciding early, because unit 8's attack set will decide it for you:
-    what should this do when `text` is missing, empty, or enormous? A crash on
-    a malformed input is one of the most common real failures there is.
-    """
-    payload = request.get_json(silent=True) or {}
-
-    # TODO: delete this and build the route.
-    return jsonify({
-        "error": "not_implemented",
-        "message": "POST /submit isn't built yet — see the TODO in app.py.",
-        "you_sent": {
-            "text_length": len(payload.get("text", "")),
-            "creator_id": payload.get("creator_id"),
-        },
-    }), 501
+    payload = json_object()
+    text = required_string(payload, "text", config.MAX_TEXT_CHARS)
+    creator = required_string(payload, "creator_id", 128)
+    if not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", creator):
+        raise APIError("invalid_creator_id", "creator_id may contain letters, digits, underscore, dot, or hyphen.")
+    style = stylometry.style_details(text)
+    if style["word_count"] < 3:
+        raise APIError("insufficient_text", "Provide at least three words; short passages may remain unsure.", 422)
+    # A durable decision is required; fail before expensive inference on corrupt storage.
+    audit.read_entries()
+    if not _inference_slot.acquire(blocking=False):
+        raise APIError("detector_busy", "Another text is being scored. Try again shortly.", 503)
+    try:
+        model = detector.signal_details(text)
+    except detector.DetectorUnavailable as exc:
+        app.logger.error("Detector unavailable: %s", type(exc).__name__)
+        raise APIError("detector_unavailable", "The local model is unavailable. Try again later.", 503) from exc
+    except (ValueError, RuntimeError, OverflowError) as exc:
+        app.logger.error("Detector scoring failed: %s", type(exc).__name__)
+        raise APIError("detector_unavailable", "The local model could not score this text.", 503) from exc
+    finally:
+        _inference_slot.release()
+    limitations = []
+    if style["word_count"] < config.MIN_CONFIDENT_WORDS:
+        limitations.append("fewer_than_40_words")
+    if style["sentence_count"] < config.MIN_CONFIDENT_SENTENCES:
+        limitations.append("fewer_than_3_sentences")
+    if model["truncated"]:
+        limitations.append("only_first_400_tokens_scored")
+    disagreement = abs(model["model_score"] - style["style_score"]) > config.DISAGREEMENT_THRESHOLD
+    try:
+        score = scoring.decision_score(model["model_score"], style["style_score"], weak_evidence=bool(limitations))
+        guess, label = scoring.score_to_label(score)
+    except ValueError as exc:
+        raise APIError("invalid_signal", "A signal or scoring configuration was invalid.", 503) from exc
+    content_id = str(uuid.uuid4())
+    response = {
+        "content_id": content_id, "guess": guess, "confidence": score,
+        "confidence_kind": "uncalibrated_ai_likeness", "combined_score": score,
+        "model_score": model["model_score"], "style_score": style["style_score"],
+        "label": label, "status": "decided", "scoring_version": config.SCORING_VERSION,
+        "evidence": {"model": model, "style": style, "limitations": limitations,
+                     "signals_disagree": disagreement},
+        "review_available": True,
+    }
+    audit.log_decision(
+        content_id, creator, guess=guess, model_score=model["model_score"],
+        style_score=style["style_score"], combined_score=score, label=label,
+        event="decision", confidence=score, confidence_kind=response["confidence_kind"],
+        scoring_version=config.SCORING_VERSION, evidence=response["evidence"],
+        text_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(), text_length=len(text),
+    )
+    return jsonify(response), 201
 
 
 @app.post("/appeal")
 def appeal():
-    """
-    A writer says you got it wrong. ← TODO — Milestone 5
+    payload = json_object()
+    content_id = valid_content_id(payload.get("content_id"))
+    reasoning = required_string(payload, "reasoning", config.MAX_REASONING_CHARS)
+    decision, _ = content_record(content_id)
+    # Creator comes from the original record, never from the caller's appeal body.
+    audit.log_appeal(
+        content_id, decision["creator_id"], reasoning,
+        **{key: decision.get(key) for key in ("guess", "model_score", "style_score", "combined_score", "label")},
+    )
+    return jsonify(
+        content_id=content_id, status="under_review",
+        message="Your review request has been recorded. The original estimate is preserved; no automatic reclassification has been made.",
+    )
 
-    Expects JSON:
-        {"content_id": "...", "reasoning": "..."}
 
-    Should:
-      1. Check the content_id actually exists — `audit.entries_for(id)` tells
-         you. A typo here fails silently and looks like a broken endpoint,
-         which is the single most common way this milestone eats an hour.
-      2. Record the appeal with `audit.log_appeal(...)`, which moves the item
-         to `under_review`.
-      3. Confirm to the writer. No automatic re-checking needed.
-
-    This is the smallest endpoint in the project and the one that matters most
-    to the person on the other end. It's the only thing standing between a
-    wrong accusation and nothing at all.
-    """
-    payload = request.get_json(silent=True) or {}
-
-    # TODO: delete this and build the route.
-    return jsonify({
-        "error": "not_implemented",
-        "message": "POST /appeal isn't built yet — see the TODO in app.py.",
-        "you_sent": payload,
-    }), 501
-
+@app.get("/content/<content_id>")
+def get_content(content_id):
+    content_id = valid_content_id(content_id)
+    decision, appeals = content_record(content_id)
+    return jsonify(content_id=content_id, status="under_review" if appeals else "decided",
+                   original_decision=decision, appeals=appeals)
 
 # ── Already works ─────────────────────────────────────────────────────────────
 
@@ -254,7 +324,12 @@ def get_log():
     You need this in unit 8 to paste entries into your README, and you need it
     now to see whether your logging is actually working.
     """
-    limit = request.args.get("limit", type=int)
+    raw_limit = request.args.get("limit")
+    if raw_limit is not None and (not raw_limit.isascii() or not raw_limit.isdigit() or len(raw_limit) > 7):
+        raise APIError("invalid_limit", "limit must be a nonnegative integer up to 1,000,000.")
+    limit = int(raw_limit) if raw_limit is not None else None
+    if limit is not None and limit > 1_000_000:
+        raise APIError("invalid_limit", "limit must be at most 1,000,000.")
     entries = audit.read_entries(limit=limit)
     return jsonify({"count": len(entries), "entries": entries})
 
