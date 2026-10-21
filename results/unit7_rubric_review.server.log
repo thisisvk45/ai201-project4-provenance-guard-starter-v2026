@@ -1,0 +1,76 @@
+Provenance Guard on http://127.0.0.1:62804
+  detector model:  gpt2
+  rate limiting:   off (unit 8)
+  audit log:       /private/tmp/provenance-guard-work/logs/audit.jsonl
+
+Check it's alive:
+  curl -X POST http://127.0.0.1:62804/ping \
+    -H "Content-Type: application/json" \
+    -d '{"message": "hello"}'
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:62804
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [21/Oct/2026 18:50:00] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:00] "POST /ping HTTP/1.1" 200 -
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:02] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /log HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/33c25be8-319f-498d-b48a-dfe930099179 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/602d2279-7754-441a-a465-5f996fbc7a87 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/d5117671-ee21-42a5-a5ee-84a60a4fbe94 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/19e04971-1a0b-4559-a8d1-9292467261f5 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/b263e1fb-eddf-40a1-9d02-107e6c3fa453 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/457e3731-6d9b-428b-b199-ee12fcfa4129 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/58ab2480-3dd6-493a-b453-be7a676a106b HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/f26c8c9d-1aa1-488d-9761-a295ec8bdaee HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/e5a8fdce-b4b9-41a4-8292-fc3748de65f9 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /log HTTP/1.1" 200 -
+Provenance Guard on http://127.0.0.1:62804
+  detector model:  gpt2
+  rate limiting:   off (unit 8)
+  audit log:       /private/tmp/provenance-guard-work/logs/audit.jsonl
+
+Check it's alive:
+  curl -X POST http://127.0.0.1:62804/ping \
+    -H "Content-Type: application/json" \
+    -d '{"message": "hello"}'
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:62804
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/33c25be8-319f-498d-b48a-dfe930099179 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/602d2279-7754-441a-a465-5f996fbc7a87 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/d5117671-ee21-42a5-a5ee-84a60a4fbe94 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/19e04971-1a0b-4559-a8d1-9292467261f5 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/bfa8d93c-2308-4ddb-92eb-4e91dcfd7a2c HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/b263e1fb-eddf-40a1-9d02-107e6c3fa453 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/457e3731-6d9b-428b-b199-ee12fcfa4129 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/58ab2480-3dd6-493a-b453-be7a676a106b HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/f26c8c9d-1aa1-488d-9761-a295ec8bdaee HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:50:03] "GET /content/e5a8fdce-b4b9-41a4-8292-fc3748de65f9 HTTP/1.1" 200 -
