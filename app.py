@@ -218,7 +218,10 @@ def content_record(content_id):
 
 
 @app.post("/submit")
-# @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
+@limiter.limit(
+    f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day",
+    exempt_when=lambda: app.config.get("TESTING", False),
+)
 def submit():
     payload = json_object()
     text = required_string(payload, "text", config.MAX_TEXT_CHARS)
