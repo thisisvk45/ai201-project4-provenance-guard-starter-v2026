@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Provenance Guard held out evaluation record",
+  "type": "object",
+  "required": ["id", "origin", "source", "verified", "topic", "text"],
+  "properties": {
+    "id": {"type": "string"},
+    "origin": {"enum": ["human", "ai"]},
+    "source": {"type": "string"},
+    "verified": {"type": "boolean"},
+    "topic": {"type": "string"},
+    "text": {"type": "string"}
+  }
+}
