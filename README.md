@@ -320,3 +320,41 @@ I defined the criteria and expected behavior, checked the outputs at each step, 
 2. **Failure handling.** I used AI to review whether appeals could appear successful without usable history. It found unreadable-log cases and Unicode separators that broke later lookups. The required behavior was to preserve the exact appeal reason and original decision, and return `503` when storage was unusable. Regression tests and the restart check verify those changes.
 
 I think the ornate AI false negative is the clearest remaining limitation. I kept it in the results and left the thresholds unchanged.
+
+## Rate Limiting
+
+The service allows 6 requests per minute and 120 per day for one creator ID. A writer can make several normal submissions. A script cannot make unlimited quick requests.
+
+The key is the creator ID, not only the network address. This is the extra safety check in the limiter. One script cannot avoid the limit by using many addresses while keeping the same creator ID.
+
+The local flood test sent 15 requests as `unit8_flood`. The first 6 returned `201`. The next 9 returned `429`.
+
+```text
+201 201 201 201 201 201 429 429 429 429 429 429 429 429 429
+```
+
+The complete run is in `results/flood_2026-11-04_1852.md`. The audit log includes each accepted decision and each rate limit rejection.
+
+## Attack Run Before
+
+The official staff attack folder is not present in this repository or workspace. I have not claimed results for attacks I did not run. When the folder is available, this command creates the required report.
+
+```bash
+AI201_RATE_LIMITS=1 python run_attacks.py --set path/to/attack_set --label before
+```
+
+## Run Log and Verdicts
+
+The Unit 7 verification covers route validation, label boundaries, storage failures, durable appeals, and restart recovery. The first two acceptance criteria require a separate frozen set of 20 independent human passages and 20 matched AI passages. That held out set has not been supplied or assembled, so those two criteria are not marked as passed.
+
+The remaining criteria have automated Unit 7 evidence. The rate limit evidence above confirms the Unit 8 limiter path. The staff attack run is still required before a final Unit 8 verdict table can be completed honestly.
+
+## Improvement
+
+The measured local security improvement is rate limiting. A caller can make six submissions in one minute, then receives a clear `429` response. The rejected requests remain visible in the audit log instead of disappearing.
+
+The next measured improvement must be selected from an actual staff attack result. I will record the exact failing stage, change one rule, then run the same attack set again with the label `after`.
+
+## What Is Still Broken
+
+This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review. The official attack run and held out evaluation data are still needed for final Unit 8 grading evidence.
