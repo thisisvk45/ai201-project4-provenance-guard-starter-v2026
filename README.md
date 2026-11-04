@@ -358,3 +358,5 @@ The next measured improvement must be selected from an actual staff attack resul
 ## What Is Still Broken
 
 This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review. The official attack run and held out evaluation data are still needed for final Unit 8 grading evidence.
+
+The repository includes `evaluation/README.md` and `scripts/validate_held_out.py` to prepare the exact 20 human and 20 AI passage set required by the criteria. The validator checks count, text length, source fields, verification, duplicate text, and topic coverage before any model result is recorded.
