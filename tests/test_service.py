@@ -104,6 +104,7 @@ class ServiceTests(unittest.TestCase):
         cases += [
             ({"json": {"text": "one two", "creator_id": "x"}}, 422),
             ({"json": {"text": "!" * 20, "creator_id": "x"}}, 422),
+            ({"json": {"text": TEXT + "\u0000", "creator_id": "x"}}, 400),
             ({"json": {"text": "x" * 10001, "creator_id": "x"}}, 413),
             ({"json": {"text": TEXT, "creator_id": "x" * 129}}, 413),
             ({"data": "x" * 65537, "content_type": "application/json"}, 413),

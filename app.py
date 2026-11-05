@@ -200,6 +200,14 @@ def required_string(payload, field, maximum):
     return value
 
 
+def contains_disallowed_control_characters(value):
+    """Reject invisible control bytes while preserving normal line breaks and tabs."""
+    return any(
+        (ord(character) < 32 and character not in "\t\n\r") or ord(character) == 127
+        for character in value
+    )
+
+
 def valid_content_id(value):
     if not isinstance(value, str):
         raise APIError("invalid_content_id", "content_id must be a UUID string.")
@@ -226,6 +234,8 @@ def submit():
     payload = json_object()
     text = required_string(payload, "text", config.MAX_TEXT_CHARS)
     creator = required_string(payload, "creator_id", 128)
+    if contains_disallowed_control_characters(text):
+        raise APIError("invalid_text", "text contains unsupported control characters.")
     if not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", creator):
         raise APIError("invalid_creator_id", "creator_id may contain letters, digits, underscore, dot, or hyphen.")
     style = stylometry.style_details(text)

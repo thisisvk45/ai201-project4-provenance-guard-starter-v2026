@@ -337,26 +337,20 @@ The complete run is in `results/flood_2026-11-04_1852.md`. The audit log include
 
 ## Attack Run Before
 
-The official staff attack folder is not present in this repository or workspace. I have not claimed results for attacks I did not run. When the folder is available, this command creates the required report.
-
-```bash
-AI201_RATE_LIMITS=1 python run_attacks.py --set path/to/attack_set --label before
-```
+The official set was run from `/Users/viksmacpro/Downloads/attack_set`. It contained 56 requests and caused no server crashes. The complete report is `results/attack_run_2026-11-04_2118_before.md`.
 
 ## Run Log and Verdicts
 
-The Unit 7 verification covers route validation, label boundaries, storage failures, durable appeals, and restart recovery. The first two acceptance criteria require a separate frozen set of 20 independent human passages and 20 matched AI passages. That held out set has not been supplied or assembled, so those two criteria are not marked as passed.
+The official before and after reports, each attack verdict, ten audit events, and the route diagnosis are in `results/attack_review_2026-11-04.md`.
 
-The remaining criteria have automated Unit 7 evidence. The rate limit evidence above confirms the Unit 8 limiter path. The staff attack run is still required before a final Unit 8 verdict table can be completed honestly.
+The Unit 7 verification covers route validation, label boundaries, storage failures, durable appeals, and restart recovery. The first two acceptance criteria still require a separate frozen set of 20 independent human passages and 20 matched AI passages. Those criteria are not marked as passed.
 
 ## Improvement
 
-The measured local security improvement is rate limiting. A caller can make six submissions in one minute, then receives a clear `429` response. The rejected requests remain visible in the audit log instead of disappearing.
-
-The next measured improvement must be selected from an actual staff attack result. I will record the exact failing stage, change one rule, then run the same attack set again with the label `after`.
+The measured improvement came from MF03 in the official attack set. Before the change, invisible control characters were accepted and scored. The route now rejects unsupported control characters with a `400` response. The exact before and after result is recorded in `results/attack_review_2026-11-04.md`.
 
 ## What Is Still Broken
 
-This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review. The official attack run and held out evaluation data are still needed for final Unit 8 grading evidence.
+This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review. The held out evaluation data are still needed for criteria one and two.
 
 The repository includes `evaluation/README.md` and `scripts/validate_held_out.py` to prepare the exact 20 human and 20 AI passage set required by the criteria. The validator checks count, text length, source fields, verification, duplicate text, and topic coverage before any model result is recorded.
