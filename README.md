@@ -343,7 +343,23 @@ The official set was run from `/Users/viksmacpro/Downloads/attack_set`. It conta
 
 The official before and after reports, each attack verdict, ten audit events, and the route diagnosis are in `results/attack_review_2026-11-04.md`.
 
-The Unit 7 verification covers route validation, label boundaries, storage failures, durable appeals, and restart recovery. The first two acceptance criteria still require a separate frozen set of 20 independent human passages and 20 matched AI passages. Those criteria are not marked as passed.
+The Unit 7 verification covers route validation, label boundaries, storage failures, durable appeals, and restart recovery.
+
+## Held Out Evaluation
+
+The frozen set has 20 sourced human passages and 20 topic matched AI passages. The set passes its structure check before any score is recorded.
+
+```bash
+.venv/bin/python scripts/validate_held_out.py evaluation/held_out.jsonl
+PORT=5062 .venv/bin/python app.py
+.venv/bin/python scripts/run_held_out_evaluation.py --url http://127.0.0.1:5062 --trials 3 --label after
+```
+
+The live three trial result is in `results/held_out_evaluation_2026-11-08_1903_after.md`.
+
+Criterion 1 passed in all three trials. All 20 human passages were accepted in each trial and none was labelled AI.
+
+Criterion 2 was not met in any trial. The human median was `0.461710`, the AI median was `0.318185`, and the difference was `-0.143525`. The target requires a positive difference of at least `0.20`. The threshold and weights were not changed after seeing this result.
 
 ## Improvement
 
@@ -351,6 +367,6 @@ The measured improvement came from MF03 in the official attack set. Before the c
 
 ## What Is Still Broken
 
-This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review. The held out evaluation data are still needed for criteria one and two.
+This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The held out evaluation also shows that this scoring design did not separate this AI set from this human set. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review.
 
-The repository includes `evaluation/README.md` and `scripts/validate_held_out.py` to prepare the exact 20 human and 20 AI passage set required by the criteria. The validator checks count, text length, source fields, verification, duplicate text, and topic coverage before any model result is recorded.
+The repository includes `evaluation/README.md`, `scripts/validate_held_out.py`, and `scripts/run_held_out_evaluation.py`. The validator checks count, text length, source fields, verification, duplicate text, and topic coverage. The runner sends every frozen passage in three trials, records every response, and calculates the two required measurements.
