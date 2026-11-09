@@ -361,6 +361,14 @@ Criterion 1 passed in all three trials. All 20 human passages were accepted in e
 
 Criterion 2 was not met in any trial. The human median was `0.461710`, the AI median was `0.318185`, and the difference was `-0.143525`. The target requires a positive difference of at least `0.20`. The threshold and weights were not changed after seeing this result.
 
+### Criterion 2 Diagnosis
+
+This failure happened before label mapping. The model signal median was `0.378700` for the human set and `0.279600` for the AI set. The style signal median was `0.500000` for the human set and `0.458100` for the AI set. The combining rule uses 70 percent model signal and 30 percent style signal, so it preserved the same direction and produced the lower AI combined median.
+
+The style mechanism is visible in the frozen data. The human passages had a median of 2.5 sentences, so many used the neutral `0.5` weak evidence fallback. The AI passages had a median of 5 sentences but a higher median windowed vocabulary ratio, `0.865537` compared with `0.816698`, which reduced the style score's repetition component. The model signal also ranked the two groups in the wrong direction. A plausible reason is that the public domain human texts are familiar or predictable to GPT 2, but this run does not prove that cause.
+
+The label mapping did not create this failure because criterion 2 compares scores, not labels. I did not change the frozen weights, threshold, corpus text, or label mapping after measuring the result. A later project could test a corpus from sources outside the model's training data and replace the surface style heuristic with a separately validated signal.
+
 ## Improvement
 
 The measured improvement came from MF03 in the official attack set. Before the change, invisible control characters were accepted and scored. The route now rejects unsupported control characters with a `400` response. The exact before and after result is recorded in `results/attack_review_2026-11-04.md`.
