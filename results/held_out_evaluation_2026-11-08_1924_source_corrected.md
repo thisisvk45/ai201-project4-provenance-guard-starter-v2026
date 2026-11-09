@@ -6,9 +6,9 @@ This report records real local service calls against the frozen evaluation corpu
 
 Corpus: `evaluation/held_out.jsonl`
 
-Corpus SHA256: `148b8a4e7a7bf4cf8ed7cefde18c1d34d993ea7e802d0d9aee68fb640096b2a9`
+Corpus SHA256: `8bf7d68e194267c55c8cc7571f6ca16f18b36e50852dd6416705bc5182577f39`
 
-Service: `http://127.0.0.1:5062`
+Service: `http://127.0.0.1:5064`
 
 Trials: 3
 

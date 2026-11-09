@@ -351,11 +351,11 @@ The frozen set has 20 sourced human passages and 20 topic matched AI passages. T
 
 ```bash
 .venv/bin/python scripts/validate_held_out.py evaluation/held_out.jsonl
-PORT=5062 .venv/bin/python app.py
-.venv/bin/python scripts/run_held_out_evaluation.py --url http://127.0.0.1:5062 --trials 3 --label after
+PORT=5064 .venv/bin/python app.py
+.venv/bin/python scripts/run_held_out_evaluation.py --url http://127.0.0.1:5064 --trials 3 --label source_corrected
 ```
 
-The live three trial result is in `results/held_out_evaluation_2026-11-08_1903_after.md`.
+The live three trial result is in `results/held_out_evaluation_2026-11-08_1924_source_corrected.md`.
 
 Criterion 1 passed in all three trials. All 20 human passages were accepted in each trial and none was labelled AI.
 
