@@ -378,3 +378,13 @@ The measured improvement came from MF03 in the official attack set. Before the c
 This service does not prove authorship. Style changes, editing, language background, topic, and unusual vocabulary can move both scores. The held out evaluation also shows that this scoring design did not separate this AI set from this human set. The in memory limiter resets when the service restarts and does not coordinate across multiple service processes. The appeal route records a review request but does not finish a human review.
 
 The repository includes `evaluation/README.md`, `scripts/validate_held_out.py`, and `scripts/run_held_out_evaluation.py`. The validator checks count, text length, source fields, verification, duplicate text, and topic coverage. The runner sends every frozen passage in three trials, records every response, and calculates the two required measurements.
+
+## Capstone
+
+**What This Extends**
+
+I am extending Provenance Guard, the local writing estimate and appeal service from Units 7 and 8. The new work is an operational record of every HTTP request, including requests the service rejects, with a request ID and measured duration. This is separate from the existing audit log, which records decisions and appeals as product evidence.
+
+**The Shape**
+
+Shape A: deploy and instrument, using the local-with-logs path. The extension is a reproducible start command and a structured JSONL request log that lets me inspect inputs, outcomes, errors, and timing after a run. I am keeping the service on loopback because its local GPT-2 model needs more memory than the course's free host provides. I am leaving detector scores and thresholds, the appeal workflow, and the in-memory rate limiter out of scope. I will not use real private writing in the capstone runs.
