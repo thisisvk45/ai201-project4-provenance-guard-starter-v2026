@@ -440,6 +440,20 @@ Before the improvement, I ran [three separate trials](results/capstone_before/re
 | 4. Start in a clean checkout | health and log match | MET | MET | MET | MET |
 | 5. Record model time within total time | 10/10 | 0/10 | 0/10 | 0/10 | MISSED |
 
+These are exact outputs from before trial 1, directly underneath the run log. They come from `results/capstone_before/trial1/requests.jsonl`, produced by `app.py::record_request` and `request_log.py::append`. In order: criterion 4's health call, criterion 1's successful submission, criterion 2's text, appeal, and query probes, criterion 3's rejected request, and criterion 5's warm submission. The last record has total duration but no model duration field. `scripts/run_capstone_trials.py::trial` matched the response IDs and checked the full five-request rejection set and three-marker absence; its actual status and score output is in `results/capstone_before/report.json`.
+
+```jsonl
+{"timestamp": "2026-11-14T09:18:04.373+00:00", "request_id": "46072cef-29cb-4a38-8354-931860b3d951", "input": {"method": "GET", "path": "/health", "content_type": "", "body_bytes": null}, "output": {"status_code": 200, "guess": null, "content_id": null, "error": null}, "duration_ms": 0.529}
+{"timestamp": "2026-11-14T09:18:17.663+00:00", "request_id": "12e31f35-f936-4f39-9b9d-45ce3a6d3e8f", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "640fa564-3a1a-4448-98de-e33b53b583ef", "error": null}, "duration_ms": 13287.453}
+{"timestamp": "2026-11-14T09:18:18.201+00:00", "request_id": "341488d4-7312-4779-b625-dfbf32256a5f", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 475}, "output": {"status_code": 201, "guess": "unsure", "content_id": "b4aa1c98-5138-4ae1-b4fc-1ece6046bf0e", "error": null}, "duration_ms": 61.179}
+{"timestamp": "2026-11-14T09:18:18.204+00:00", "request_id": "370b009d-d079-4c52-9d26-8d134143f96f", "input": {"method": "POST", "path": "/appeal", "content_type": "application/json", "body_bytes": 132}, "output": {"status_code": 200, "guess": null, "content_id": "b4aa1c98-5138-4ae1-b4fc-1ece6046bf0e", "error": null}, "duration_ms": 1.033}
+{"timestamp": "2026-11-14T09:18:18.206+00:00", "request_id": "7097c447-0471-49f4-908b-4d864f06e9c9", "input": {"method": "GET", "path": "/log", "content_type": "", "body_bytes": null}, "output": {"status_code": 200, "guess": null, "content_id": null, "error": null}, "duration_ms": 0.798}
+{"timestamp": "2026-11-14T09:18:18.208+00:00", "request_id": "bdffc035-d394-4819-a4d0-78390605a74d", "input": {"method": "POST", "path": "/submit", "content_type": "text/plain", "body_bytes": 5}, "output": {"status_code": 415, "guess": null, "content_id": null, "error": "unsupported_media_type"}, "duration_ms": 0.798}
+{"timestamp": "2026-11-14T09:18:18.328+00:00", "request_id": "0a762109-a54d-4db2-9f1a-eec2f8d9271b", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "f1ebcff9-fbd9-4b80-baa7-d85a1c937d53", "error": null}, "duration_ms": 54.871}
+```
+
+Criteria 1–4 are MET because every trial reached each complete target in the table. Criterion 5 is MISSED because all three trials were 0/10 against its 10/10 target.
+
 Criterion 5 missed at the instrumentation stage. `app.py::record_request` timed the full request, but `app.py::submit` never timed `detector.signal_details`. The request log therefore had `duration_ms` on every submission and no `model_duration_ms` on any of the 30 warm submissions. This is a missing measurement, not evidence that inference took zero time. I chose to time that call and add the measured value to the same request record, leaving the detector and scoring rule unchanged.
 
 **The Improvement**
