@@ -213,6 +213,9 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertNotIn("local diagnostic", response.get_data(as_text=True))
         self.assertEqual(audit.read_entries(), [])
+        record = json.loads(self.request_log.read_text().splitlines()[-1])
+        self.assertEqual(record["output"]["status_code"], 503)
+        self.assertEqual(record["output"]["error"], "detector_unavailable")
 
     def test_invalid_model_scores_do_not_create_decisions(self):
         for score in [float("nan"), float("inf"), None, "0.5", True, -.01, 1.01]:
