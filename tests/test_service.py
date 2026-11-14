@@ -99,6 +99,9 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(len(records), 2)
         self.assertEqual([record["output"]["status_code"] for record in records], [201, 422])
         self.assertEqual(records[0]["output"]["content_id"], accepted.get_json()["content_id"])
+        self.assertGreaterEqual(records[0]["model_duration_ms"], 0)
+        self.assertLessEqual(records[0]["model_duration_ms"], records[0]["duration_ms"])
+        self.assertIsNone(records[1]["model_duration_ms"])
         self.assertEqual(records[1]["output"]["error"], "insufficient_text")
         for response, record in zip((accepted, rejected), records):
             self.assertEqual(response.headers["X-Request-ID"], record["request_id"])

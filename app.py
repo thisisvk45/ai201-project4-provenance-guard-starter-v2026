@@ -62,6 +62,7 @@ def record_request(response):
             "error": payload.get("error") or ("internal_error" if response.status_code >= 500 else None),
         },
         "duration_ms": round(1000 * (time.perf_counter() - getattr(g, "request_started", time.perf_counter())), 3),
+        "model_duration_ms": getattr(g, "model_duration_ms", None),
     }
     try:
         request_log.append(entry)
@@ -285,6 +286,7 @@ def submit():
     audit.read_entries()
     if not _inference_slot.acquire(blocking=False):
         raise APIError("detector_busy", "Another text is being scored. Try again shortly.", 503)
+    model_started = time.perf_counter()
     try:
         model = detector.signal_details(text)
     except detector.DetectorUnavailable as exc:
@@ -294,6 +296,7 @@ def submit():
         app.logger.error("Detector scoring failed: %s", type(exc).__name__)
         raise APIError("detector_unavailable", "The local model could not score this text.", 503) from exc
     finally:
+        g.model_duration_ms = round(1000 * (time.perf_counter() - model_started), 3)
         _inference_slot.release()
     limitations = []
     if style["word_count"] < config.MIN_CONFIDENT_WORDS:
