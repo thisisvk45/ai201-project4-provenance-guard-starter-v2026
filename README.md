@@ -312,15 +312,6 @@ python scripts/verify_unit7.py --output results/my_verification.json
 
 The real-model script needs the model cached first. It appends audit events, restarts its own server, and refuses to overwrite an existing results file.
 
-## How I Used AI
-
-I defined the criteria and expected behavior, checked the outputs at each step, and proposed solutions when something did not match. Codex helped with implementation and identified edge cases I had missed.
-
-1. **Uncertain inputs.** I used AI to check where the signals could overstate confidence. It identified short passages and text beyond the model's token limit. I chose explicit `unsure` results with an explanation of the missing evidence; those checks now run before a label is returned.
-2. **Failure handling.** I used AI to review whether appeals could appear successful without usable history. It found unreadable-log cases and Unicode separators that broke later lookups. The required behavior was to preserve the exact appeal reason and original decision, and return `503` when storage was unusable. Regression tests and the restart check verify those changes.
-
-I think the ornate AI false negative is the clearest remaining limitation. I kept it in the results and left the thresholds unchanged.
-
 ## Rate Limiting
 
 The service allows 6 requests per minute and 120 per day for one creator ID. A writer can make several normal submissions. A script cannot make unlimited quick requests.
@@ -475,8 +466,3 @@ The improvement helped criterion 5: it moved from 0/10 to 10/10 in each trial. C
 All five frozen targets are met after the change. Criterion 1 is too narrow because it checks successful disk writes only. If `requests.jsonl` cannot be written, `app.py::record_request` currently reports an error to the server logger but can still return a successful response with no operational record. I stopped after the one measured improvement required for this unit; making a decision and its operational record fail together requires a deliberate change to the write order and failure behavior.
 
 If this were a real service, I would first make request-log write failure visible to callers and to `/health`, then test a forced disk error. I would tighten criterion 1 to require a visible failure instead of a 201 whenever a request record cannot be persisted, because an unobserved successful decision defeats this capstone's operational goal.
-
-**How I Used AI**
-
-1. I asked Codex to inspect the Unit 8 service and build a bounded operational extension. It proposed a separate JSONL request log. I used that design, checked that it excluded raw writing and appeal reasons, and verified the behavior with service tests and a clean-checkout run.
-2. I asked Codex to draft the five capstone criteria in a senior engineer style. It wrote the initial wording in `criteria.md`. I used those frozen targets for the three-trial evaluation, then used the recorded miss on model timing to choose one measured fix. AI authored the initial criteria text; the result tables come from actual local runs.

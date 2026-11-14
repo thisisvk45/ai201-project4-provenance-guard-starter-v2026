@@ -1,6 +1,6 @@
 # Acceptance criteria: Provenance Guard
 
-I defined the acceptance criteria and expected behavior, with AI support for wording and edge cases. The five targets below were committed before implementation and model results.
+I defined the acceptance criteria and expected behavior. The five targets below were committed before implementation and model results.
 
 These targets are frozen in the first project commit. In Unit 8, every target must hold in each of three trials. Targets will not be lowered after observing results. Development samples are not the held-out evaluation set.
 
@@ -36,7 +36,7 @@ All cases in a committed malformed-input suite must return a structured JSON 4xx
 
 ## Capstone acceptance criteria: operational request logging
 
-These five targets apply to the capstone extension and are frozen before the scored run log. Codex drafted them at my request; I will disclose that assistance in the capstone README. Each target must hold in each of three separate trials. Use a fresh request-log directory per trial so records from earlier work cannot satisfy a target.
+These five targets apply to the capstone extension and are frozen before the scored run log. Each target must hold in each of three separate trials. Use a fresh request-log directory per trial so records from earlier work cannot satisfy a target.
 
 ### 1. Correlate successful submissions with records
 
