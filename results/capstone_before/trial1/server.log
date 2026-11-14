@@ -1,0 +1,47 @@
+Provenance Guard on http://127.0.0.1:59855
+  detector model:  gpt2
+  rate limiting:   ON
+  audit log:       /Users/viksmacpro/Desktop/AI201/project4-provenance-guard-starter-v2026/results/capstone_before/trial1/audit.jsonl
+  request log:     /Users/viksmacpro/Desktop/AI201/project4-provenance-guard-starter-v2026/results/capstone_before/trial1/requests.jsonl
+
+Check it's alive:
+  curl -X POST http://127.0.0.1:59855/ping \
+    -H "Content-Type: application/json" \
+    -d '{"message": "hello"}'
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:59855
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [14/Nov/2026 01:18:04] "GET /health HTTP/1.1" 200 -
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:17] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "POST /appeal HTTP/1.1" 200 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "GET /log?marker=QUERYMARK_cc77221988fd4a46ae84db1c0a260cde HTTP/1.1" 200 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[31m[1mPOST /submit HTTP/1.1[0m" 415 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[31m[1mPOST /submit HTTP/1.1[0m" 400 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[31m[1mPOST /submit HTTP/1.1[0m" 400 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[31m[1mPOST /submit HTTP/1.1[0m" 422 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[31m[1mPOST /submit HTTP/1.1[0m" 413 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
+127.0.0.1 - - [14/Nov/2026 01:18:18] "[35m[1mPOST /submit HTTP/1.1[0m" 201 -
