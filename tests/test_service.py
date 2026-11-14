@@ -65,6 +65,8 @@ class ServiceTests(unittest.TestCase):
         self.log = Path(self.tmp.name) / "audit.jsonl"
         self.path_patch = patch.object(config, "AUDIT_LOG", self.log)
         self.path_patch.start()
+        self.request_log = Path(self.tmp.name) / "requests.jsonl"
+        patch.object(config, "REQUEST_LOG", self.request_log).start()
         app.app.config["TESTING"] = True
         self.client = app.app.test_client()
         self.model = patch("detector.signal_details", return_value=model_result()).start()
@@ -88,6 +90,25 @@ class ServiceTests(unittest.TestCase):
         self.assertNotIn("text", entries[0])
         self.assertEqual(entries[0]["combined_score"], result["confidence"])
         self.assertEqual(entries[0]["evidence"], result["evidence"])
+
+    def test_request_log_records_success_and_rejection_without_private_text(self):
+        accepted = self.client.post("/submit", json={"text": TEXT, "creator_id": "test_writer"})
+        rejected = self.client.post("/submit", json={"text": "two words", "creator_id": "test_writer"})
+        self.assertEqual((accepted.status_code, rejected.status_code), (201, 422))
+        records = [json.loads(line) for line in self.request_log.read_text().splitlines()]
+        self.assertEqual(len(records), 2)
+        self.assertEqual([record["output"]["status_code"] for record in records], [201, 422])
+        self.assertEqual(records[0]["output"]["content_id"], accepted.get_json()["content_id"])
+        self.assertEqual(records[1]["output"]["error"], "insufficient_text")
+        for response, record in zip((accepted, rejected), records):
+            self.assertEqual(response.headers["X-Request-ID"], record["request_id"])
+            self.assertEqual(record["input"]["path"], "/submit")
+            self.assertEqual(record["input"]["method"], "POST")
+            self.assertGreaterEqual(record["duration_ms"], 0)
+            self.assertIn("timestamp", record)
+        raw = self.request_log.read_text()
+        self.assertNotIn(TEXT, raw)
+        self.assertNotIn("two words", raw)
 
     def test_invalid_requests_never_infer(self):
         cases = [
