@@ -1,6 +1,27 @@
 # Running Provenance Guard
 
-This is a local Flask prototype for CodePath AI201 Unit 7. Its detector runs on your laptop after the initial model download; no API key is required.
+## Capstone: reproducible local run
+
+Use Python 3.11.15 and the pinned `requirements.lock` for this capstone run. From a clean checkout, create the environment once:
+
+```bash
+python3.11 -m venv .venv
+.venv/bin/python -m pip install -r requirements.lock
+```
+
+GPT-2 downloads on first use. The local Hugging Face cache for this run occupies about 525 MB; allow about 550 MB for the initial download. No API key is needed. If the model is cached, the service also works offline.
+
+Start the service with this one command from the repository root:
+
+```bash
+PORT=5057 AI201_DEBUG=0 .venv/bin/python app.py
+```
+
+In a second terminal, check `http://127.0.0.1:5057/health` and send the example in `fixtures/sample_submit.json` to `/submit` as shown below. Each response gets an `X-Request-ID`. The operational record is `logs/requests.jsonl`; its `input` object includes method, path, content type, and body size, and its `output` object includes HTTP status, guess, content ID, and error code. It also records a UTC timestamp and `duration_ms`. Text, appeal reasons, and query strings are excluded. The existing `logs/audit.jsonl` remains the decision and appeal record. Both logs use `AI201_LOG_DIR` if a separate directory is needed for a run.
+
+The capstone test run and cost measurement are documented in the `## Capstone` section of README.md.
+
+This is a local Flask prototype for CodePath AI201 Unit 7. Its detector runs on your laptop after the initial model download; no API key is required. The original Unit 7 environment notes below describe that earlier run; use the capstone setup above to reproduce the current pinned environment.
 
 ## Setup
 

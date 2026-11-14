@@ -379,6 +379,7 @@ def main():
     print(f"  detector model:  {config.DETECTOR_MODEL}")
     print(f"  rate limiting:   {'ON' if config.RATE_LIMITING_ENABLED else 'off (unit 8)'}")
     print(f"  audit log:       {config.AUDIT_LOG}")
+    print(f"  request log:     {config.REQUEST_LOG}")
     print()
     print("Check it's alive:")
     print(f'  curl -X POST http://{config.HOST}:{config.PORT}/ping \\')

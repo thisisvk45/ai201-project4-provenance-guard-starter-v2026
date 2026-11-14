@@ -388,3 +388,7 @@ I am extending Provenance Guard, the local writing estimate and appeal service f
 **The Shape**
 
 Shape A: deploy and instrument, using the local-with-logs path. The extension is a reproducible start command and a structured JSONL request log that lets me inspect inputs, outcomes, errors, and timing after a run. I am keeping the service on loopback because its local GPT-2 model needs more memory than the course's free host provides. I am leaving detector scores and thresholds, the appeal workflow, and the in-memory rate limiter out of scope. I will not use real private writing in the capstone runs.
+
+**Running It**
+
+Path B, local with logs. [RUNNING.md](RUNNING.md) gives the Python 3.11.15 setup, pinned dependencies, model cache requirement, and single start command. The service listens on loopback at port 5057. The capstone request log is `logs/requests.jsonl`.
