@@ -97,4 +97,5 @@ RATE_LIMIT_STORAGE = "memory://"
 
 LOG_DIR = Path(os.getenv("AI201_LOG_DIR", str(ROOT / "logs")))
 AUDIT_LOG = LOG_DIR / "audit.jsonl"
+REQUEST_LOG = LOG_DIR / "requests.jsonl"
 RESULTS_DIR = ROOT / "results"
