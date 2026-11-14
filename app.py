@@ -15,20 +15,60 @@ import uuid
 import hashlib
 import re
 import threading
+import time
+from datetime import datetime, timezone
 from werkzeug.exceptions import BadRequest
 
 import detector
 import stylometry
 import scoring
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 
 import audit
 import config
+import request_log
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = config.MAX_BODY_BYTES
 _inference_slot = threading.BoundedSemaphore(1)
+
+
+@app.before_request
+def start_request_record():
+    g.request_started = time.perf_counter()
+    g.request_id = str(uuid.uuid4())
+
+
+@app.after_request
+def record_request(response):
+    """Record outcomes, including handled errors, without reading private bodies."""
+    payload = response.get_json(silent=True)
+    if not isinstance(payload, dict):
+        payload = {}
+    entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
+        "request_id": getattr(g, "request_id", str(uuid.uuid4())),
+        "input": {
+            "method": request.method,
+            "path": request.path,
+            "content_type": request.mimetype,
+            "body_bytes": request.content_length,
+        },
+        "output": {
+            "status_code": response.status_code,
+            "guess": payload.get("guess"),
+            "content_id": payload.get("content_id"),
+            "error": payload.get("error") or ("internal_error" if response.status_code >= 500 else None),
+        },
+        "duration_ms": round(1000 * (time.perf_counter() - getattr(g, "request_started", time.perf_counter())), 3),
+    }
+    try:
+        request_log.append(entry)
+    except OSError as exc:
+        app.logger.error("Request log write failed: %s", type(exc).__name__)
+    response.headers["X-Request-ID"] = entry["request_id"]
+    return response
 
 
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
