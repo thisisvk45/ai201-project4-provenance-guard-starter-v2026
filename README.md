@@ -398,3 +398,17 @@ Path B, local with logs. [RUNNING.md](RUNNING.md) gives the Python 3.11.15 setup
 `app.py::start_request_record` assigns a request ID and starts a monotonic timer. `app.py::record_request` writes one JSON object when the response is ready, including rejected requests and model failures. `request_log.py::append` flushes each record to `logs/requests.jsonl`. Each record has a UTC `timestamp`, `request_id`, `input` (method, path, content type, body size), `output` (HTTP status, guess, content ID, error code), and `duration_ms`. The response carries the same ID in `X-Request-ID`, so a caller can find its record. Raw writing, appeal reasons, and query strings are excluded from this operational log.
 
 I cloned this repository to a new directory, installed `requirements.lock` in a fresh Python 3.11 environment, and ran the 22 service tests successfully. The documented single start command served `/health` with HTTP 200 and wrote a matching structured request record. The sample run and failed-run records will appear below with the capstone evaluation evidence.
+
+**Run Log and Verdicts**
+
+Before the improvement, I ran [three separate trials](results/capstone_before/report.json) against a clean checkout. Each trial used a fresh service process and fresh log directory. The trial script is `scripts/run_capstone_trials.py`.
+
+| Criterion | Target in each trial | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Match successful responses to records | 10/10 | 10/10 | 10/10 | 10/10 | MET |
+| 2. Keep three private markers out of request log | 3/3 records, 0 markers | 3/3, 0 | 3/3, 0 | 3/3, 0 | MET |
+| 3. Record rejected requests without decisions | 5/5, 0 decisions | 5/5, 0 | 5/5, 0 | 5/5, 0 | MET |
+| 4. Start in a clean checkout | health and log match | MET | MET | MET | MET |
+| 5. Record model time within total time | 10/10 | 0/10 | 0/10 | 0/10 | MISSED |
+
+Criterion 5 missed at the instrumentation stage. `app.py::record_request` timed the full request, but `app.py::submit` never timed `detector.signal_details`. The request log therefore had `duration_ms` on every submission and no `model_duration_ms` on any of the 30 warm submissions. This is a missing measurement, not evidence that inference took zero time. I will time that call and add the measured value to the same request record, leaving the detector and scoring rule unchanged.
