@@ -33,3 +33,37 @@ For ten successful submissions followed by ten valid appeals, all ten appeals mu
 All cases in a committed malformed-input suite must return a structured JSON 4xx response, make zero detector calls, and create zero decision/appeal records: non-JSON media type, malformed JSON, non-object JSON, absent/null/non-string/blank fields, fewer than three words, text over 10,000 characters, creator ID outside `[A-Za-z0-9_.-]{1,128}`, appeal reasoning over 2,000 characters, malformed content IDs, and bodies over 65,536 bytes. Accepted requests must contain all documented response fields with finite scores in `[0,1]`.
 
 **Why this target:** Invalid input should cost a validation check, not a model invocation. Explicit size and type limits bound work and give clients actionable errors. A rejection log entry is allowed; a fabricated decision is not.
+
+## Capstone acceptance criteria: operational request logging
+
+These five targets apply to the capstone extension and are frozen before the scored run log. Codex drafted them at my request; I will disclose that assistance in the capstone README. Each target must hold in each of three separate trials. Use a fresh request-log directory per trial so records from earlier work cannot satisfy a target.
+
+### 1. Correlate successful submissions with records
+
+For ten sequential valid `POST /submit` requests using the committed sample text and distinct creator IDs, all ten must return HTTP 201 with an `X-Request-ID` header. Each ID must match exactly one JSONL record in `requests.jsonl`. Every matched record must contain a UTC timestamp, the input method and path, HTTP 201 and a content ID in the output, and a finite nonnegative `duration_ms`.
+
+**Why this target:** The service already saves decisions, but an operator needs to connect a caller's response to the request that produced it. Ten requests expose missing or duplicate entries that one happy-path call would miss.
+
+### 2. Keep private content out of operational logs
+
+In each trial, submit text containing a unique marker, appeal it with a different unique marker, and request `/log` with a third unique marker in the query string. All three requests must appear in `requests.jsonl`, and none of the three marker strings may appear anywhere in that file. The linked audit log may retain the appeal reason as designed.
+
+**Why this target:** A useful operational record should not become a second store of writers' text or review reasons. Three distinct markers make the text, appeal, and query-string paths separately checkable.
+
+### 3. Record rejected requests without decisions
+
+Send five invalid `POST /submit` requests in each trial: non-JSON media type, malformed JSON, missing text, two-word text, and a body above 65,536 bytes. All five must return their documented 4xx status and an `X-Request-ID`. Each ID must match exactly one request-log record with the same HTTP status and a nonblank error code. None may create an audit decision.
+
+**Why this target:** Bad input is a normal failure path. If it vanishes from the operational record, the service cannot distinguish a quiet period from repeated rejected calls.
+
+### 4. Start from a clean checkout
+
+From a separate clean checkout with the pinned dependencies installed, start the service using the single command in `RUNNING.md` in three fresh processes. In each process, `GET /health` must return HTTP 200 and its `X-Request-ID` must match one new JSONL request record with method `GET`, path `/health`, and status 200.
+
+**Why this target:** The local-with-logs path is the deployment evidence for this model-heavy service. A repeatable start and observable response matter more than one successful run in the development directory.
+
+### 5. Expose model time within request time
+
+For ten warm, valid `POST /submit` requests in each trial, all ten matched request-log records must include a finite `model_duration_ms` measured around model inference, with `0 <= model_duration_ms <= duration_ms`. The total `duration_ms` must remain present. Exclude one explicit warmup request from the ten measured requests.
+
+**Why this target:** Total response time alone cannot show whether the local model or another stage caused a slow request. The model is the largest expected compute cost, so its own timing is the first breakdown needed for diagnosis.
