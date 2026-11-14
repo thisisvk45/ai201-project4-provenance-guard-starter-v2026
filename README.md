@@ -397,7 +397,36 @@ Path B, local with logs. [RUNNING.md](RUNNING.md) gives the Python 3.11.15 setup
 
 `app.py::start_request_record` assigns a request ID and starts a monotonic timer. `app.py::record_request` writes one JSON object when the response is ready, including rejected requests and model failures. `request_log.py::append` flushes each record to `logs/requests.jsonl`. Each record has a UTC `timestamp`, `request_id`, `input` (method, path, content type, body size), `output` (HTTP status, guess, content ID, error code), and `duration_ms`. The response carries the same ID in `X-Request-ID`, so a caller can find its record. Raw writing, appeal reasons, and query strings are excluded from this operational log.
 
-I cloned this repository to a new directory, installed `requirements.lock` in a fresh Python 3.11 environment, and ran the 22 service tests successfully. The documented single start command served `/health` with HTTP 200 and wrote a matching structured request record. The sample run and failed-run records will appear below with the capstone evaluation evidence.
+I cloned this repository to a new directory, installed `requirements.lock` in a fresh Python 3.11 environment, and ran the 22 service tests successfully. The documented single start command served `/health` with HTTP 200 and wrote a matching structured request record. The sample and failed-run records are pasted below.
+
+These are the first ten exact JSONL entries from `results/capstone_after/trial1/requests.jsonl`, written by `request_log.py::append` through `app.py::record_request`. The first is the clean-checkout health response for criterion 4. The next nine are successful submissions for criterion 1. The first submission loads GPT-2 into that process, so its model and total times are much larger than the warm requests.
+
+```jsonl
+{"timestamp": "2026-11-14T09:19:49.328+00:00", "request_id": "4d3b5bb9-965d-431f-95f5-1effb0cb0681", "input": {"method": "GET", "path": "/health", "content_type": "", "body_bytes": null}, "output": {"status_code": 200, "guess": null, "content_id": null, "error": null}, "duration_ms": 0.644, "model_duration_ms": null}
+{"timestamp": "2026-11-14T09:20:03.177+00:00", "request_id": "82171b6b-4cbc-4e7f-998a-139d718bd652", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "7265807c-9cc4-46d3-9494-6bc19ca1ca78", "error": null}, "duration_ms": 13845.686, "model_duration_ms": 13843.628}
+{"timestamp": "2026-11-14T09:20:03.234+00:00", "request_id": "3175f1b0-0450-4cae-94b0-28e7f33283a7", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "13ff6fc6-9e6e-4bf2-8f80-3e6667bc0863", "error": null}, "duration_ms": 54.254, "model_duration_ms": 52.629}
+{"timestamp": "2026-11-14T09:20:03.290+00:00", "request_id": "dd71b772-fe25-484a-bf1e-cf6c7b8aa618", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "b3334989-8d46-44c9-bede-6c8ff2331fbd", "error": null}, "duration_ms": 53.771, "model_duration_ms": 51.941}
+{"timestamp": "2026-11-14T09:20:03.343+00:00", "request_id": "294be81c-05a4-4195-a261-1a4b4b957aa7", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "758b38bc-f9f6-40a3-9e2f-56c99992aa7b", "error": null}, "duration_ms": 51.705, "model_duration_ms": 50.155}
+{"timestamp": "2026-11-14T09:20:03.398+00:00", "request_id": "267e486e-4363-4235-ad5a-0da3315f8d05", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "df145a49-322c-49ad-9a9a-93f97fd880da", "error": null}, "duration_ms": 52.74, "model_duration_ms": 50.894}
+{"timestamp": "2026-11-14T09:20:03.452+00:00", "request_id": "f7458957-59b4-48a5-8563-4d65ccbbe0ed", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "ca4ffecb-6920-4c8a-8198-19aea6e31855", "error": null}, "duration_ms": 52.788, "model_duration_ms": 51.035}
+{"timestamp": "2026-11-14T09:20:03.506+00:00", "request_id": "3a84a08f-8cbc-487b-a727-0270f45b875d", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "e1af8cf5-3c53-4079-9068-a16b5bf94222", "error": null}, "duration_ms": 51.68, "model_duration_ms": 50.094}
+{"timestamp": "2026-11-14T09:20:03.560+00:00", "request_id": "6b33e9ac-843e-4061-b18b-dfad5e06889b", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "6a1f5a7b-3302-45be-9d93-313b1ffe13ab", "error": null}, "duration_ms": 52.936, "model_duration_ms": 51.314}
+{"timestamp": "2026-11-14T09:20:03.614+00:00", "request_id": "57ffa544-9103-4ead-9f56-0f76553f9297", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "cbdd81e5-2034-48ba-a716-7128afcbe4cb", "error": null}, "duration_ms": 51.69, "model_duration_ms": 50.177}
+```
+
+The next exact records from the same file show the text submission, appeal, and query probe for criterion 2, a rejected input for criterion 3, and a measured warm submission for criterion 5. The three marker strings are in `results/capstone_after/report.json`; none occurs in this request log. The response IDs, statuses, and bodies for all five checks are in that report.
+
+```jsonl
+{"timestamp": "2026-11-14T09:20:03.745+00:00", "request_id": "105b006c-39f7-4a63-b062-65eed4c84045", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 475}, "output": {"status_code": 201, "guess": "unsure", "content_id": "bce5de4b-69bf-4543-8e1b-23a42518a66e", "error": null}, "duration_ms": 74.769, "model_duration_ms": 72.633}
+{"timestamp": "2026-11-14T09:20:03.749+00:00", "request_id": "51db8294-72f3-4634-ac7f-3027ebe40aef", "input": {"method": "POST", "path": "/appeal", "content_type": "application/json", "body_bytes": 132}, "output": {"status_code": 200, "guess": null, "content_id": "bce5de4b-69bf-4543-8e1b-23a42518a66e", "error": null}, "duration_ms": 1.667, "model_duration_ms": null}
+{"timestamp": "2026-11-14T09:20:03.751+00:00", "request_id": "f75dcd0f-6394-4b35-9a55-e19be7f02b92", "input": {"method": "GET", "path": "/log", "content_type": "", "body_bytes": null}, "output": {"status_code": 200, "guess": null, "content_id": null, "error": null}, "duration_ms": 0.646, "model_duration_ms": null}
+{"timestamp": "2026-11-14T09:20:03.752+00:00", "request_id": "b5a18029-65d7-4179-a01a-0424e1bd708f", "input": {"method": "POST", "path": "/submit", "content_type": "text/plain", "body_bytes": 5}, "output": {"status_code": 415, "guess": null, "content_id": null, "error": "unsupported_media_type"}, "duration_ms": 0.558, "model_duration_ms": null}
+{"timestamp": "2026-11-14T09:20:03.874+00:00", "request_id": "bbec1989-e135-425e-a132-7e427b94bfde", "input": {"method": "POST", "path": "/submit", "content_type": "application/json", "body_bytes": 432}, "output": {"status_code": 201, "guess": "unsure", "content_id": "3ba91049-c035-47ed-91c7-97c302252d09", "error": null}, "duration_ms": 53.113, "model_duration_ms": 51.149}
+```
+
+**What It Costs**
+
+The local model uses no paid API. I measured server processing time from `duration_ms` in 30 warm submissions: ten sequential requests in each of three fresh-process trials, with one explicit warmup excluded per trial. The after-run mean was **52.8333 ms = 0.0528333 seconds per request**; mean model inference time was **50.982 ms**. At 100 such warm submissions a day, `100 × 0.0528333 = 5.28333 seconds` of measured request processing a day. This is compute time, not a hosting bill or a full-day CPU accounting. The first submission in trial 1 took 13.846 seconds while the model loaded; cold starts are outside the warm average. The before-run warm mean was 53.9265 ms, so the small timing change is not evidence of a speed improvement.
 
 **Run Log and Verdicts**
 
@@ -411,4 +440,29 @@ Before the improvement, I ran [three separate trials](results/capstone_before/re
 | 4. Start in a clean checkout | health and log match | MET | MET | MET | MET |
 | 5. Record model time within total time | 10/10 | 0/10 | 0/10 | 0/10 | MISSED |
 
-Criterion 5 missed at the instrumentation stage. `app.py::record_request` timed the full request, but `app.py::submit` never timed `detector.signal_details`. The request log therefore had `duration_ms` on every submission and no `model_duration_ms` on any of the 30 warm submissions. This is a missing measurement, not evidence that inference took zero time. I will time that call and add the measured value to the same request record, leaving the detector and scoring rule unchanged.
+Criterion 5 missed at the instrumentation stage. `app.py::record_request` timed the full request, but `app.py::submit` never timed `detector.signal_details`. The request log therefore had `duration_ms` on every submission and no `model_duration_ms` on any of the 30 warm submissions. This is a missing measurement, not evidence that inference took zero time. I chose to time that call and add the measured value to the same request record, leaving the detector and scoring rule unchanged.
+
+**The Improvement**
+
+I timed the call to `detector.signal_details` inside `app.py::submit` and copied that duration into the existing request record as `model_duration_ms`. This directly addresses criterion 5's missing stage measurement. The detector, score mapping, and request inputs stayed the same. [The full after-run evidence](results/capstone_after/report.json) uses the same evaluator, three fresh processes, and fresh log directories.
+
+| Criterion | Target in each trial | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Match successful responses to records | 10/10 | 10/10 | 10/10 | 10/10 | MET |
+| 2. Keep three private markers out of request log | 3/3 records, 0 markers | 3/3, 0 | 3/3, 0 | 3/3, 0 | MET |
+| 3. Record rejected requests without decisions | 5/5, 0 decisions | 5/5, 0 | 5/5, 0 | 5/5, 0 | MET |
+| 4. Start in a clean checkout | health and log match | MET | MET | MET | MET |
+| 5. Record model time within total time | 10/10 | 10/10 | 10/10 | 10/10 | MET |
+
+The improvement helped criterion 5: it moved from 0/10 to 10/10 in each trial. Criteria 1–4 stayed met. The measured warm mean changed from 53.9265 to 52.8333 ms; that difference is small enough that I make no speed claim.
+
+**What's Still Broken**
+
+All five frozen targets are met after the change. Criterion 1 is too narrow because it checks successful disk writes only. If `requests.jsonl` cannot be written, `app.py::record_request` currently reports an error to the server logger but can still return a successful response with no operational record. I stopped after the one measured improvement required for this unit; making a decision and its operational record fail together requires a deliberate change to the write order and failure behavior.
+
+If this were a real service, I would first make request-log write failure visible to callers and to `/health`, then test a forced disk error. I would tighten criterion 1 to require a visible failure instead of a 201 whenever a request record cannot be persisted, because an unobserved successful decision defeats this capstone's operational goal.
+
+**How I Used AI**
+
+1. I asked Codex to inspect the Unit 8 service and build a bounded operational extension. It proposed a separate JSONL request log. I used that design, checked that it excluded raw writing and appeal reasons, and verified the behavior with service tests and a clean-checkout run.
+2. I asked Codex to draft the five capstone criteria in a senior engineer style. It wrote the initial wording in `criteria.md`. I used those frozen targets for the three-trial evaluation, then used the recorded miss on model timing to choose one measured fix. AI authored the initial criteria text; the result tables come from actual local runs.

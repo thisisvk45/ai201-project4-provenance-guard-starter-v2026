@@ -101,4 +101,4 @@ This prototype has no authentication, authorization, private reviewer console, o
 
 ## Unit 8 boundary
 
-Rate limiting is off by default (`AI201_RATE_LIMITS=0`). The starter's attack/evaluation scripts remain for Unit 8. They are not claimed as passing or completed. Criteria 1 and 2 need a new frozen held-out corpus; development fixtures must not be reused as that evaluation set. The five original criteria and current scoring thresholds remain unchanged.
+Rate limiting was off by default during Unit 7 (`AI201_RATE_LIMITS=0`); the current service turns it on by default after Unit 8. The starter's attack/evaluation scripts were originally reserved for Unit 8. The Unit 8 results and held-out corpus are now in README.md and `evaluation/`. The five original criteria and scoring thresholds remain unchanged.
