@@ -392,3 +392,9 @@ Shape A: deploy and instrument, using the local-with-logs path. The extension is
 **Running It**
 
 Path B, local with logs. [RUNNING.md](RUNNING.md) gives the Python 3.11.15 setup, pinned dependencies, model cache requirement, and single start command. The service listens on loopback at port 5057. The capstone request log is `logs/requests.jsonl`.
+
+**Instrumentation**
+
+`app.py::start_request_record` assigns a request ID and starts a monotonic timer. `app.py::record_request` writes one JSON object when the response is ready, including rejected requests and model failures. `request_log.py::append` flushes each record to `logs/requests.jsonl`. Each record has a UTC `timestamp`, `request_id`, `input` (method, path, content type, body size), `output` (HTTP status, guess, content ID, error code), and `duration_ms`. The response carries the same ID in `X-Request-ID`, so a caller can find its record. Raw writing, appeal reasons, and query strings are excluded from this operational log.
+
+I cloned this repository to a new directory, installed `requirements.lock` in a fresh Python 3.11 environment, and ran the 22 service tests successfully. The documented single start command served `/health` with HTTP 200 and wrote a matching structured request record. The sample run and failed-run records will appear below with the capstone evaluation evidence.

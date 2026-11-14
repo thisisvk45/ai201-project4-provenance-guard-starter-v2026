@@ -21,6 +21,14 @@ In a second terminal, check `http://127.0.0.1:5057/health` and send the example 
 
 The capstone test run and cost measurement are documented in the `## Capstone` section of README.md.
 
+To repeat the cost measurement after starting the service, run:
+
+```bash
+.venv/bin/python scripts/measure_capstone.py --output results/my_capstone_cost.json
+```
+
+The script sends one warmup submission and then ten sequential submissions of the committed example text. It matches their response request IDs to `logs/requests.jsonl` and reports the mean server duration. Choose a new output filename for each run; the script refuses to overwrite an existing report.
+
 This is a local Flask prototype for CodePath AI201 Unit 7. Its detector runs on your laptop after the initial model download; no API key is required. The original Unit 7 environment notes below describe that earlier run; use the capstone setup above to reproduce the current pinned environment.
 
 ## Setup
